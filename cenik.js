@@ -34,7 +34,7 @@
       }
       thead.appendChild(trh);
 
-      // řádky
+      // řádky dat
       for (var r=0;r<items.length;r++){
         var row = items[r];
         var tr = document.createElement("tr");
@@ -43,23 +43,4 @@
         for (var c=0;c<headerKeys.length;c++){
           var key = headerKeys[c];
           var val = row[key];
-          var td = document.createElement("td");
-
-          td.style.cssText = "padding:5px;border-bottom:1px solid #eee;" + (c>0 ? "text-align:center;" : "text-align:left;");
-
-          if (isLast) {
-            td.style.fontWeight = "bold";
-            td.style.fontSize = "15px";
-            if (c === 0) td.style.textAlign = "center";
-          }
-
-          td.innerHTML = isChecked(val) ? checkIcon() : (val == null ? "" : val);
-          tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-      }
-    })
-    .catch(function(){
-      document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
-    });
-})();
+          var td = document.createEle

@@ -162,25 +162,35 @@ function highlightThirdColumn() {
     th.style.borderTopRightRadius = "10px";
     th.style.position = "relative";
 
-    // štítek DOPORUČUJEME
-    var label = document.createElement("div");
-    label.textContent = "DOPORUČUJEME";
-    label.style.cssText = `
-      position:absolute;
-      top:80%;
-      left:-70px;
-      transform:rotate(-90deg);
-      background:#e60000;
-      color:#fff;
-      font-weight:bold;
-      font-size:14px;
-      padding:6px 12px;
-      border-radius:6px;
-      white-space:nowrap;
-      z-index:10;
-    `;
-    th.appendChild(label);
-  }
+    // === ŠTÍTEK DOPORUČUJEME (svisle uprostřed sloupce) ===
+  // zjistíme pozici a výšku sloupce
+  var colIndex = 2;
+  var rectCell = allRows[0].cells[colIndex].getBoundingClientRect();
+  var rectLast = allRows[allRows.length-1].cells[colIndex].getBoundingClientRect();
+  var rectTable = table.getBoundingClientRect();
+
+  var topPos = rectCell.top - rectTable.top;
+  var colHeight = rectLast.bottom - rectCell.top;
+
+  var label = document.createElement("div");
+  label.textContent = "DOPORUČUJEME";
+  label.style.cssText = `
+    position:absolute;
+    left:${rectCell.left - rectTable.left - 55}px;
+    top:${topPos + colHeight/2}px;
+    transform:translateY(-50%) rotate(-90deg);
+    background:#e60000;
+    color:#fff;
+    font-weight:bold;
+    font-size:14px;
+    padding:6px 12px;
+    border-radius:6px;
+    white-space:nowrap;
+    z-index:10;
+  `;
+
+  table.style.position = "relative"; // aby fungovalo absolutní pozicování
+  table.appendChild(label);
 
   // spodní hrana + zaoblení
   var lastRow = allRows[allRows.length-1];

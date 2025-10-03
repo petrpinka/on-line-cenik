@@ -16,14 +16,14 @@
   fetch(URL_JSON)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var table = document.getElementById("cenik-table");
-      if (!table) return;
+      var test = document.getElementById("cenik-test");
+      if (!test) return;
 
-      table.style.tableLayout = "fixed";
-      table.style.width = "100%";
+      test.style.testLayout = "fixed";
+      test.style.width = "100%";
 
-      var thead = table.querySelector("thead");
-      var tbody = table.querySelector("tbody");
+      var thead = test.querySelector("thead");
+      var tbody = test.querySelector("tbody");
 
       var items = (data && Array.isArray(data.items)) ? data.items : data;
       if (!items || !items.length) return;
@@ -31,7 +31,7 @@
       var headerKeys = Object.keys(items[0]);
 
       // --- COLGROUP s pevnými šířkami ---
-      var oldCol = table.querySelector("colgroup");
+      var oldCol = test.querySelector("colgroup");
       if (oldCol) oldCol.remove();
 
       var colgroup = document.createElement("colgroup");
@@ -46,7 +46,7 @@
         }
         colgroup.appendChild(col);
       }
-      table.insertBefore(colgroup, thead);
+      test.insertBefore(colgroup, thead);
 
       // --- ZÁHLAVÍ ---
       var trh = document.createElement("tr");
@@ -97,8 +97,8 @@
 
       function clearHighlight(){
         if (lastCol === -1) return;
-        for (var r=0; r<table.rows.length; r++){
-          var cell = table.rows[r].cells[lastCol];
+        for (var r=0; r<test.rows.length; r++){
+          var cell = test.rows[r].cells[lastCol];
           if (cell) cell.style.backgroundColor = "";
         }
         lastCol = -1;
@@ -108,17 +108,17 @@
         if (col === lastCol) return;
         clearHighlight();
         if (colors[col]) {
-          for (var r=0; r<table.rows.length; r++){
-            var cell = table.rows[r].cells[col];
+          for (var r=0; r<test.rows.length; r++){
+            var cell = test.rows[r].cells[col];
             if (cell) cell.style.backgroundColor = colors[col];
           }
           lastCol = col;
         }
       }
 
-      table.addEventListener("mousemove", function(e){
+      test.addEventListener("mousemove", function(e){
         var cell = e.target;
-        while (cell && cell !== table && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
+        while (cell && cell !== test && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
           cell = cell.parentNode;
         }
         if (!cell) { clearHighlight(); return; }
@@ -130,7 +130,7 @@
         }
       });
 
-      table.addEventListener("mouseleave", clearHighlight);
+      test.addEventListener("mouseleave", clearHighlight);
     })
     .catch(function(){
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
@@ -150,12 +150,12 @@
     const INTERVAL = 60;     // ms
     let waited = 0;
     const timer = setInterval(() => {
-      const table = document.querySelector('#cenik-table');
-      const theadReady = table?.querySelector('thead tr th:nth-child(3)');
-      const bodyReady  = table?.querySelector('tbody tr td:nth-child(3)');
+      const test = document.querySelector('#cenik-test');
+      const theadReady = test?.querySelector('thead tr th:nth-child(3)');
+      const bodyReady  = test?.querySelector('tbody tr td:nth-child(3)');
       if (theadReady && bodyReady) {
         clearInterval(timer);
-        highlightThirdColumn(table);
+        highlightThirdColumn(test);
       } else {
         waited += INTERVAL;
         if (waited >= MAX_WAIT) clearInterval(timer); // tichý stop, nic nepadá
@@ -163,11 +163,11 @@
     }, INTERVAL);
   });
 
-  function highlightThirdColumn(table){
+  function highlightThirdColumn(test){
     const colIndex = 2; // 0-based => třetí sloupec
 
     // 1) přidáme třídy do hlavičky a těla
-    const th = table.querySelector('thead tr th:nth-child(3)');
+    const th = test.querySelector('thead tr th:nth-child(3)');
     if (th) {
       th.classList.add('col3','col3-top');
       th.style.position = 'relative';
@@ -178,7 +178,7 @@
       th.appendChild(label);
     }
 
-    const rows = table.querySelectorAll('tbody tr');
+    const rows = test.querySelectorAll('tbody tr');
     rows.forEach((tr, i) => {
       const td = tr.children[colIndex];
       if (!td) return;
@@ -188,10 +188,10 @@
 
     // 2) styly — vytvoří „jediný box“ kolem celého sloupce (bez JS měření)
     const css = `
-      #cenik-table { border-collapse: collapse; position: relative; }
+      #cenik-test { border-collapse: collapse; position: relative; }
 
       /* podbarvení celé kolony */
-      #cenik-table .col3 {
+      #cenik-test .col3 {
         background: rgba(230,0,0,0.05);
         /* svislé hrany boxu — dáme je na KAŽDOU buňku sloupce,
            border-collapse zajistí plynulé spojení bez mezer */
@@ -204,25 +204,25 @@
       }
 
       /* horní hrana boxu (jen hlavička sloupce) */
-      #cenik-table thead th.col3-top {
+      #cenik-test thead th.col3-top {
         border-top: 3px solid #e60000 !important;
       }
 
       /* spodní hrana boxu (jen poslední řádek sloupce) */
-      #cenik-table tbody td.col3.col3-bottom {
+      #cenik-test tbody td.col3.col3-bottom {
         border-bottom: 3px solid #e60000 !important;
       }
 
       /* jemný stín, aby sloupec vystoupil */
-      #cenik-table .col3.col3-top,
-      #cenik-table .col3.col3-bottom {
+      #cenik-test .col3.col3-top,
+      #cenik-test .col3.col3-bottom {
         /* nic navíc – stín uděláme přes pseudo-element na hlavičce,
            ať je jen jednou a nepere se s border-collapse */
       }
-      #cenik-table thead th.col3-top {
+      #cenik-test thead th.col3-top {
         position: relative;
       }
-      #cenik-table thead th.col3-top::after {
+      #cenik-test thead th.col3-top::after {
         content: "";
         position: absolute;
         left: -3px; right: -3px; top: -3px;
@@ -233,7 +233,7 @@
       }
 
       /* štítek */
-      #cenik-table .recommended-label {
+      #cenik-test .recommended-label {
         position: absolute;
         left: -50px;
         top: 40%;
@@ -250,7 +250,7 @@
       }
 
       @media (max-width: 768px){
-        #cenik-table .recommended-label {
+        #cenik-test .recommended-label {
           left: -38px; font-size: 12px; padding: 4px 8px;
         }
       }

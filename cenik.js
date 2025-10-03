@@ -2,7 +2,6 @@
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
   function checkIcon(){
-    // SVG ikona zatržítka – funguje bezpečně z externího JS
     return '<svg viewBox="0 0 24 24" width="18" height="18" style="display:inline-block;vertical-align:middle;">'
          + '<circle cx="12" cy="12" r="9.5" fill="none" stroke="#111" stroke-width="1.3"></circle>'
          + '<path d="M7.5 12.5l3 3 6-6" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>'
@@ -59,6 +58,47 @@
         }
         tbody.appendChild(tr);
       }
+
+      // ===== Zvýraznění celých sloupců 2–4 (inline styly) =====
+      var table = document.getElementById("cenik-table");
+      var lastCol = -1;
+
+      function clearHighlight(){
+        if (lastCol === -1) return;
+        for (var r=0; r<table.rows.length; r++){
+          var cell = table.rows[r].cells[lastCol];
+          if (cell) cell.style.backgroundColor = "";
+        }
+        lastCol = -1;
+      }
+
+      function highlightCol(col){
+        if (col === lastCol) return;
+        clearHighlight();
+        if (col < 1 || col > 3) return; // jen sloupce 2–4
+        for (var r=0; r<table.rows.length; r++){
+          var cell = table.rows[r].cells[col];
+          if (cell) cell.style.backgroundColor = "#f5f5f5";
+        }
+        lastCol = col;
+      }
+
+      table.addEventListener("mousemove", function(e){
+        var cell = e.target;
+        while (cell && cell !== table && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
+          cell = cell.parentNode;
+        }
+        if (!cell) { clearHighlight(); return; }
+        var idx = cell.cellIndex;
+        if (typeof idx === "number" && idx >= 1 && idx <= 3) {
+          highlightCol(idx);
+        } else {
+          clearHighlight();
+        }
+      });
+
+      table.addEventListener("mouseleave", clearHighlight);
+      // ===== konec zvýraznění =====
     })
     .catch(function(){
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";

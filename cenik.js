@@ -43,4 +43,64 @@
         for (var c=0;c<headerKeys.length;c++){
           var key = headerKeys[c];
           var val = row[key];
-          var td = document.createEle
+          var td = document.createElement("td");
+
+          td.style.cssText = "padding:5px;border-bottom:1px solid #eee;" + (c>0 ? "text-align:center;" : "text-align:left;");
+
+          if (isLast) {
+            td.style.fontWeight = "bold";
+            td.style.fontSize = "15px";
+            if (c === 0) td.style.textAlign = "center";
+          }
+
+          td.innerHTML = isChecked(val) ? checkIcon() : (val == null ? "" : val);
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+
+      // ===== Zvýraznění celých sloupců 2–4 (inline styly) =====
+      var table = document.getElementById("cenik-table");
+      var lastCol = -1;
+
+      function clearHighlight(){
+        if (lastCol === -1) return;
+        for (var r=0; r<table.rows.length; r++){
+          var cell = table.rows[r].cells[lastCol];
+          if (cell) cell.style.backgroundColor = "";
+        }
+        lastCol = -1;
+      }
+
+      function highlightCol(col){
+        if (col === lastCol) return;
+        clearHighlight();
+        if (col < 1 || col > 3) return; // jen sloupce 2–4
+        for (var r=0; r<table.rows.length; r++){
+          var cell = table.rows[r].cells[col];
+          if (cell) cell.style.backgroundColor = "#f5f5f5";
+        }
+        lastCol = col;
+      }
+
+      table.addEventListener("mousemove", function(e){
+        var cell = e.target;
+        while (cell && cell !== table && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
+          cell = cell.parentNode;
+        }
+        if (!cell) { clearHighlight(); return; }
+        var idx = cell.cellIndex;
+        if (typeof idx === "number" && idx >= 1 && idx <= 3) {
+          highlightCol(idx);
+        } else {
+          clearHighlight();
+        }
+      });
+
+      table.addEventListener("mouseleave", clearHighlight);
+      // ===== konec zvýraznění =====
+    })
+    .catch(function(){
+      document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
+    });
+})();

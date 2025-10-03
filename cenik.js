@@ -59,7 +59,7 @@
         tbody.appendChild(tr);
       }
 
-      // ===== Zvýraznění celých sloupců 2–4 (inline styly) =====
+      // ===== Zvýraznění celých sloupců 2–4 (inline styly + tučný text) =====
       var table = document.getElementById("cenik-table");
       var lastCol = -1;
 
@@ -67,7 +67,12 @@
         if (lastCol === -1) return;
         for (var r=0; r<table.rows.length; r++){
           var cell = table.rows[r].cells[lastCol];
-          if (cell) cell.style.backgroundColor = "";
+          if (cell) {
+            cell.style.backgroundColor = "";
+            if (r !== table.rows.length - 1) { // nezasahujeme do posledního řádku (ten je tučný pořád)
+              cell.style.fontWeight = "";
+            }
+          }
         }
         lastCol = -1;
       }
@@ -78,7 +83,12 @@
         if (col < 1 || col > 3) return; // jen sloupce 2–4
         for (var r=0; r<table.rows.length; r++){
           var cell = table.rows[r].cells[col];
-          if (cell) cell.style.backgroundColor = "#f5f5f5";
+          if (cell) {
+            cell.style.backgroundColor = "#f5f5f5";
+            if (r !== table.rows.length - 1) { // poslední řádek už je tučný sám
+              cell.style.fontWeight = "bold";
+            }
+          }
         }
         lastCol = col;
       }

@@ -137,7 +137,6 @@
     });
 })();
 
-// === PEVNÉ ZVÝRAZNĚNÍ 3. SLOUPCE ===
 function highlightThirdColumn() {
   var table = document.getElementById("cenik-test");
   if (!table) return;
@@ -145,6 +144,7 @@ function highlightThirdColumn() {
   var colIndex = 2; // 0-based -> třetí sloupec
   var allRows = table.rows;
 
+  // podbarvení + svislé hrany
   for (var r=0; r<allRows.length; r++) {
     var cell = allRows[r].cells[colIndex];
     if (cell) {
@@ -160,23 +160,30 @@ function highlightThirdColumn() {
     th.style.borderTop = "3px solid #e60000";
     th.style.borderTopLeftRadius = "10px";
     th.style.borderTopRightRadius = "10px";
-    th.style.position = "relative";
+  }
 
-    // === ŠTÍTEK DOPORUČUJEME (svisle uprostřed sloupce) ===
-  // zjistíme pozici a výšku sloupce
-  var colIndex = 2;
-  var rectCell = allRows[0].cells[colIndex].getBoundingClientRect();
-  var rectLast = allRows[allRows.length-1].cells[colIndex].getBoundingClientRect();
+  // spodní hrana + zaoblení
+  var lastRow = allRows[allRows.length-1];
+  if (lastRow && lastRow.cells[colIndex]) {
+    var td = lastRow.cells[colIndex];
+    td.style.borderBottom = "3px solid #e60000";
+    td.style.borderBottomLeftRadius = "10px";
+    td.style.borderBottomRightRadius = "10px";
+  }
+
+  // === ŠTÍTEK DOPORUČUJEME (svisle uprostřed sloupce) ===
+  var rectTop = allRows[0].cells[colIndex].getBoundingClientRect();
+  var rectBottom = lastRow.cells[colIndex].getBoundingClientRect();
   var rectTable = table.getBoundingClientRect();
 
-  var topPos = rectCell.top - rectTable.top;
-  var colHeight = rectLast.bottom - rectCell.top;
+  var topPos = rectTop.top - rectTable.top;
+  var colHeight = rectBottom.bottom - rectTop.top;
 
   var label = document.createElement("div");
   label.textContent = "DOPORUČUJEME";
   label.style.cssText = `
     position:absolute;
-    left:${rectCell.left - rectTable.left - 55}px;
+    left:${rectTop.left - rectTable.left - 55}px;
     top:${topPos + colHeight/2}px;
     transform:translateY(-50%) rotate(-90deg);
     background:#e60000;
@@ -189,17 +196,8 @@ function highlightThirdColumn() {
     z-index:10;
   `;
 
-  table.style.position = "relative"; // aby fungovalo absolutní pozicování
+  table.style.position = "relative"; // nutné pro absolutní pozicování
   table.appendChild(label);
-
-  // spodní hrana + zaoblení
-  var lastRow = allRows[allRows.length-1];
-  if (lastRow && lastRow.cells[colIndex]) {
-    var td = lastRow.cells[colIndex];
-    td.style.borderBottom = "3px solid #e60000";
-    td.style.borderBottomLeftRadius = "10px";
-    td.style.borderBottomRightRadius = "10px";
-  }
 }
 
 // spustíme s malým zpožděním, aby byla tabulka jistě hotová

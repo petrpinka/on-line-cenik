@@ -13,7 +13,7 @@
   fetch(URL_JSON)
     .then(r => r.json())
     .then(data => {
-      const table = document.querySelector("#cenik-test");
+      const table = document.querySelector("#cenik-table");
       if(!table) return;
 
       const thead = table.querySelector("thead");
@@ -113,34 +113,36 @@
       style.textContent = css;
       document.head.appendChild(style);
 
-      // vypočítáme pozici a šířku 3. sloupce (0-based index = 2)
-      const colIndex = 2;
-      const firstRow = table.querySelector("tr");
-      if(firstRow){
-        const cells = firstRow.children;
-        if(cells[colIndex]){
-          const rect = cells[colIndex].getBoundingClientRect();
-          const tableRect = table.getBoundingClientRect();
-          const left = rect.left - tableRect.left;
-          const width = rect.width;
+      // výpočet highlightu až po vykreslení
+      requestAnimationFrame(() => {
+        const colIndex = 2; // 0-based index = třetí sloupec
+        const firstRow = table.querySelector("tr");
+        if(firstRow){
+          const cells = firstRow.children;
+          if(cells[colIndex]){
+            const rect = cells[colIndex].getBoundingClientRect();
+            const tableRect = table.getBoundingClientRect();
+            const left = rect.left - tableRect.left;
+            const width = rect.width;
 
-          const highlight = document.createElement("div");
-          highlight.className = "highlight-col";
-          highlight.style.left = left + "px";
-          highlight.style.width = width + "px";
+            const highlight = document.createElement("div");
+            highlight.className = "highlight-col";
+            highlight.style.left = left + "px";
+            highlight.style.width = width + "px";
 
-          const inner = document.createElement("div");
-          inner.className = "highlight-col-inner";
-          highlight.appendChild(inner);
+            const inner = document.createElement("div");
+            inner.className = "highlight-col-inner";
+            highlight.appendChild(inner);
 
-          table.appendChild(highlight);
+            table.appendChild(highlight);
 
-          // vložení nápisu "DOPORUČUJEME"
-          const label = document.createElement("div");
-          label.className = "recommended-label";
-          label.textContent = "DOPORUČUJEME";
-          highlight.appendChild(label);
+            // vložení nápisu "DOPORUČUJEME"
+            const label = document.createElement("div");
+            label.className = "recommended-label";
+            label.textContent = "DOPORUČUJEME";
+            highlight.appendChild(label);
+          }
         }
-      }
+      });
     });
 })();

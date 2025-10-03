@@ -136,3 +136,35 @@
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
     });
 })();
+
+// === PEVNÉ ZVÝRAZNĚNÍ 3. SLOUPCE ===
+function highlightThirdColumn() {
+  var table = document.getElementById("cenik-test");
+  if (!table) return;
+
+  var colIndex = 2; // 0-based -> třetí sloupec
+  var allRows = table.rows;
+
+  for (var r=0; r<allRows.length; r++) {
+    var cell = allRows[r].cells[colIndex];
+    if (cell) {
+      cell.style.backgroundColor = "rgba(230,0,0,0.05)";
+      cell.style.borderLeft = "3px solid #e60000";
+      cell.style.borderRight = "3px solid #e60000";
+    }
+  }
+
+  // horní hrana
+  if (allRows[0] && allRows[0].cells[colIndex]) {
+    allRows[0].cells[colIndex].style.borderTop = "3px solid #e60000";
+  }
+  // spodní hrana
+  var lastRow = allRows[allRows.length-1];
+  if (lastRow && lastRow.cells[colIndex]) {
+    lastRow.cells[colIndex].style.borderBottom = "3px solid #e60000";
+  }
+}
+
+// spustíme s malým zpožděním, aby byla tabulka jistě hotová
+setTimeout(highlightThirdColumn, 200);
+

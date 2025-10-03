@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-03T12:58:35+02:00",
+  "generatedAt": "2025-10-03T13:04:10+02:00",
   "items": [
     {
       "SERVIS SJEZDOVÝCH LYŽÍ": "TAK TY VOLÉÉÉ",
@@ -66,6 +66,18 @@
       "KOMPLEXNÍ servis": "790 Kč",
       "SPORTOVNÍ servis": "1190 Kč",
       "ZÁVODNÍ servis": "1790 Kč"
+    },
+    {
+      "SERVIS SJEZDOVÝCH LYŽÍ": "",
+      "KOMPLEXNÍ servis": "",
+      "SPORTOVNÍ servis": "",
+      "ZÁVODNÍ servis": ""
+    },
+    {
+      "SERVIS SJEZDOVÝCH LYŽÍ": "SERVIS SNOWBOARDŮ",
+      "KOMPLEXNÍ servis": "",
+      "SPORTOVNÍ servis": "",
+      "ZÁVODNÍ servis": ""
     }
   ]
 }

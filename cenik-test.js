@@ -167,7 +167,7 @@ function highlightThirdColumn() {
     label.textContent = "DOPORUČUJEME";
     label.style.cssText = `
       position:absolute;
-      top:40%;
+      top:80%;
       left:-70px;
       transform:rotate(-90deg);
       background:#e60000;

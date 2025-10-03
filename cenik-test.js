@@ -87,51 +87,27 @@
         tbody.appendChild(tr);
       }
 
-      // --- Zvýraznění celých sloupců 2–4 (barevně) ---
-      var lastCol = -1;
-      var colors = {
-        1: "#E9E9E9", // sloupec 2 
-        2: "#E9E9E9", // sloupec 3 
-        3: "#E9E9E9"  // sloupec 4 
-      };
-
-      function clearHighlight(){
-        if (lastCol === -1) return;
-        for (var r=0; r<table.rows.length; r++){
-          var cell = table.rows[r].cells[lastCol];
-          if (cell) cell.style.backgroundColor = "";
-        }
-        lastCol = -1;
-      }
-
-      function highlightCol(col){
-        if (col === lastCol) return;
-        clearHighlight();
-        if (colors[col]) {
-          for (var r=0; r<table.rows.length; r++){
-            var cell = table.rows[r].cells[col];
-            if (cell) cell.style.backgroundColor = colors[col];
-          }
-          lastCol = col;
+            // --- Pevné zvýraznění 3. sloupce ---
+      for (var r=0; r<table.rows.length; r++){
+        var cell = table.rows[r].cells[2]; // index 2 = třetí sloupec
+        if (cell) {
+          cell.style.backgroundColor = "rgba(230,0,0,0.05)";
+          cell.style.borderLeft = "3px solid #e60000";
+          cell.style.borderRight = "3px solid #e60000";
         }
       }
 
-      table.addEventListener("mousemove", function(e){
-        var cell = e.target;
-        while (cell && cell !== table && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
-          cell = cell.parentNode;
-        }
-        if (!cell) { clearHighlight(); return; }
-        var idx = cell.cellIndex;
-        if (typeof idx === "number") {
-          highlightCol(idx);
-        } else {
-          clearHighlight();
-        }
-      });
+      // horní hrana boxu (jen hlavička sloupce)
+      if (table.rows[0] && table.rows[0].cells[2]) {
+        table.rows[0].cells[2].style.borderTop = "3px solid #e60000";
+      }
 
-      table.addEventListener("mouseleave", clearHighlight);
-    })
+      // spodní hrana boxu (jen poslední řádek sloupce)
+      var lastRow = table.rows[table.rows.length-1];
+      if (lastRow && lastRow.cells[2]) {
+        lastRow.cells[2].style.borderBottom = "3px solid #e60000";
+      }
+
     .catch(function(){
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
     });

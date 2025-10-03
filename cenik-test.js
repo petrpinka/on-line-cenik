@@ -175,3 +175,14 @@ function highlightThirdColumn() {
 // spustíme s malým zpožděním, aby byla tabulka jistě hotová
 setTimeout(highlightThirdColumn, 200);
 
+// nastavení tabulky tak, aby šel použít border-radius
+var style = document.createElement("style");
+style.textContent = `
+  #cenik-test {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+  }
+`;
+document.head.appendChild(style);
+
+

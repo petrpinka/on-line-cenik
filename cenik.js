@@ -16,34 +16,53 @@
   fetch(URL_JSON)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var thead = document.querySelector("#cenik-table thead");
-      var tbody = document.querySelector("#cenik-table tbody");
+      var table = document.getElementById("cenik-table");
+      if (!table) return;
+
+      // Zajistíme fixed layout a plnou šířku
+      table.style.tableLayout = "fixed";
+      table.style.width = "100%";
+
+      var thead = table.querySelector("thead");
+      var tbody = table.querySelector("tbody");
 
       var items = (data && Array.isArray(data.items)) ? data.items : data;
       if (!items || !items.length) return;
 
       var headerKeys = Object.keys(items[0]);
 
-      // záhlaví
+      // --- COLGROUP s pevnými šířkami ---
+      // nejdřív zrušíme případný starý colgroup
+      var oldCol = table.querySelector("colgroup");
+      if (oldCol) oldCol.remove();
+
+      var colgroup = document.createElement("colgroup");
+      for (var i = 0; i < headerKeys.length; i++) {
+        var col = document.createElement("col");
+        if (headerKeys.length === 4) {
+          // 40% - 20% - 20% - 20%
+          col.style.width = (i === 0) ? "40%" : "20%";
+        } else {
+          // fallback: rovnoměrně
+          col.style.width = (100 / headerKeys.length) + "%";
+        }
+        colgroup.appendChild(col);
+      }
+      table.insertBefore(colgroup, thead);
+
+      // --- ZÁHLAVÍ ---
       var trh = document.createElement("tr");
       for (var i=0;i<headerKeys.length;i++){
         var th = document.createElement("th");
         th.textContent = headerKeys[i];
-        th.style.cssText = "padding:6px;font-weight:bold;border-bottom:1px solid #ddd;text-align:center;";
-
-        // rozložení sloupců: 40% - 20% - 20% - 20%
-        if (i === 0) {
-          th.style.width = "40%";
-          th.style.textAlign = "left";
-        } else if (i === 1 || i === 2 || i === 3) {
-          th.style.width = "20%";
-        }
-
+        th.style.cssText = "padding:6px;font-weight:bold;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;";
+        // první sloupec typicky textový → vlevo
+        if (i === 0) th.style.textAlign = "left";
         trh.appendChild(th);
       }
       thead.appendChild(trh);
 
-      // řádky dat
+      // --- DATA ---
       for (var r=0;r<items.length;r++){
         var row = items[r];
         var tr = document.createElement("tr");
@@ -54,8 +73,10 @@
           var val = row[key];
           var td = document.createElement("td");
 
-          td.style.cssText = "padding:5px;border-bottom:1px solid #eee;" 
-                           + (c>0 ? "text-align:center;" : "text-align:left;");
+          td.style.cssText =
+            "padding:5px;border-bottom:1px solid #eee;"
+            + (c>0 ? "text-align:center;" : "text-align:left;")
+            + "overflow-wrap:anywhere;word-break:break-word;white-space:normal;";
 
           if (isLast) {
             td.style.fontWeight = "bold";
@@ -69,14 +90,12 @@
         tbody.appendChild(tr);
       }
 
-      // ===== Zvýraznění celých sloupců 2–4 (barevně) =====
-      var table = document.getElementById("cenik-table");
+      // --- Zvýraznění celých sloupců 2–4 (barevně) ---
       var lastCol = -1;
-
       var colors = {
-        1: "#d4edda", // sloupec 2 zelená
-        2: "#dbeafe", // sloupec 3 modrá
-        3: "#f8d7da"  // sloupec 4 červená
+        1: "#d4edda", // sloupec 2 (0-based index 1) světle zelená
+        2: "#dbeafe", // sloupec 3 světle modrá
+        3: "#f8d7da"  // sloupec 4 světle červená
       };
 
       function clearHighlight(){
@@ -115,7 +134,6 @@
       });
 
       table.addEventListener("mouseleave", clearHighlight);
-      // ===== konec zvýraznění =====
     })
     .catch(function(){
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";

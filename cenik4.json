@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2025-10-03T12:57:06+02:00",
+  "generatedAt": "2025-10-03T12:57:13+02:00",
   "items": [
     {
       "SERVIS SJEZDOVÝCH LYŽÍ": "TAK TY VOLÉÉÉ",
-      "KOMPLEXNÍ servis": 1,
-      "SPORTOVNÍ servis": 1,
-      "ZÁVODNÍ SERVIS": 1
+      "KOMPLEXNÍ servis": "1",
+      "SPORTOVNÍ servis": "1",
+      "ZÁVODNÍ SERVIS": "1"
     },
     {
       "SERVIS SJEZDOVÝCH LYŽÍ": "Finishing skluznice (struktura na kameni)",
@@ -64,8 +64,8 @@
     {
       "SERVIS SJEZDOVÝCH LYŽÍ": "CENA",
       "KOMPLEXNÍ servis": "",
-      "SPORTOVNÍ servis": 1190,
-      "ZÁVODNÍ SERVIS": 1790
+      "SPORTOVNÍ servis": "1 190Kč",
+      "ZÁVODNÍ SERVIS": "1 790Kč"
     }
   ]
 }

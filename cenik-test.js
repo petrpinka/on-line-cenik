@@ -43,19 +43,49 @@
         tbody.appendChild(tr);
       });
 
-      // === ZVÝRAZNĚNÍ 3. sloupce ===
+      // === STYLY ===
       const css = `
-        #cenik-table td:nth-child(3),
-        #cenik-table th:nth-child(3) {
-          position: relative;
+        #cenik-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 15px;
+          text-align: center;
+          position: relative; /* důležité pro pozicování highlightu */
+        }
+        #cenik-table th,
+        #cenik-table td {
+          padding: 10px;
+          border: 1px solid #ddd;
+        }
+        #cenik-table th {
+          font-weight: bold;
+          background: #f7f7f7;
+        }
+
+        /* box okolo celého 3. sloupce */
+        #cenik-table .highlight-col {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          pointer-events: none;
+          z-index: 5;
+        }
+        #cenik-table .highlight-col-inner {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
           border: 3px solid #e60000;
+          border-radius: 6px;
+          background: rgba(230,0,0,0.05); /* světle červené pozadí */
+          box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* jemný stín */
         }
-        #cenik-table td:nth-child(3) {
-          background: rgba(230,0,0,0.05);
-        }
+
+        /* štítek */
         #cenik-table .recommended-label {
           position: absolute;
-          left: -45px;
+          left: -50px;
           top: 40%;
           transform: rotate(-90deg);
           background: #e60000;
@@ -66,19 +96,51 @@
           font-size: 14px;
           z-index: 10;
         }
+
+        @media (max-width: 768px) {
+          #cenik-table th, #cenik-table td {
+            font-size: 13px;
+            padding: 6px;
+          }
+          #cenik-table .recommended-label {
+            font-size: 12px;
+            padding: 4px 8px;
+            left: -38px;
+          }
+        }
       `;
       const style = document.createElement("style");
       style.textContent = css;
       document.head.appendChild(style);
 
-      // vložení nápisu "DOPORUČUJEME"
-      const th = thead.querySelector("th:nth-child(3)");
-      if(th){
-        const label = document.createElement("div");
-        label.className = "recommended-label";
-        label.textContent = "DOPORUČUJEME";
-        th.style.position = "relative";
-        th.appendChild(label);
+      // vypočítáme pozici a šířku 3. sloupce (0-based index = 2)
+      const colIndex = 2;
+      const firstRow = table.querySelector("tr");
+      if(firstRow){
+        const cells = firstRow.children;
+        if(cells[colIndex]){
+          const rect = cells[colIndex].getBoundingClientRect();
+          const tableRect = table.getBoundingClientRect();
+          const left = rect.left - tableRect.left;
+          const width = rect.width;
+
+          const highlight = document.createElement("div");
+          highlight.className = "highlight-col";
+          highlight.style.left = left + "px";
+          highlight.style.width = width + "px";
+
+          const inner = document.createElement("div");
+          inner.className = "highlight-col-inner";
+          highlight.appendChild(inner);
+
+          table.appendChild(highlight);
+
+          // vložení nápisu "DOPORUČUJEME"
+          const label = document.createElement("div");
+          label.className = "recommended-label";
+          label.textContent = "DOPORUČUJEME";
+          highlight.appendChild(label);
+        }
       }
     });
 })();

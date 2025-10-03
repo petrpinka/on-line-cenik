@@ -1,86 +1,86 @@
 {
-  "generatedAt": "2025-10-03T18:38:06+02:00",
+  "generatedAt": "2025-10-03T18:42:31+02:00",
   "items": [
     {
-      "": "Oprava skluznice natavením hmoty",
+      "PPP": "Oprava skluznice natavením hmoty",
       "KOMPLEXNÍ servis lyží": "1",
       "SPORTOVNÍ servis lyží": "1",
       "ZÁVODNÍ servis lyží": "1"
     },
     {
-      "": "Předbroušení hran a skluznice",
+      "PPP": "Předbroušení hran a skluznice",
       "KOMPLEXNÍ servis lyží": "1",
       "SPORTOVNÍ servis lyží": "1",
       "ZÁVODNÍ servis lyží": "1"
     },
     {
-      "": "Strukturování na kameni - lineární struktura",
+      "PPP": "Strukturování na kameni - lineární struktura",
       "KOMPLEXNÍ servis lyží": "1",
       "SPORTOVNÍ servis lyží": "1",
       "ZÁVODNÍ servis lyží": "1"
     },
     {
-      "": "Strukturování na kameni - vyhlazovací struktura",
+      "PPP": "Strukturování na kameni - vyhlazovací struktura",
       "KOMPLEXNÍ servis lyží": "",
       "SPORTOVNÍ servis lyží": "1",
       "ZÁVODNÍ servis lyží": "1"
     },
     {
-      "": "Strukturování na kameni - variální struktura",
-      "KOMPLEXNÍ servis lyží": "",
-      "SPORTOVNÍ servis lyží": "1",
-      "ZÁVODNÍ servis lyží": ""
-    },
-    {
-      "": "Strukturování na kameni - středová struktura",
-      "KOMPLEXNÍ servis lyží": "",
-      "SPORTOVNÍ servis lyží": "",
-      "ZÁVODNÍ servis lyží": "1"
-    },
-    {
-      "": "Úhlování boční hrany MONTANA® Crystal Glide Finish",
-      "KOMPLEXNÍ servis lyží": "1",
-      "SPORTOVNÍ servis lyží": "",
-      "ZÁVODNÍ servis lyží": ""
-    },
-    {
-      "": "Úhlování boční hrany MONTANA® RACE-EDGE",
-      "KOMPLEXNÍ servis lyží": "",
-      "SPORTOVNÍ servis lyží": "1",
-      "ZÁVODNÍ servis lyží": "1"
-    },
-    {
-      "": "Tuning spodní hrany MONTANA® High Tech Tuning (0,5°)",
-      "KOMPLEXNÍ servis lyží": "1",
-      "SPORTOVNÍ servis lyží": "1",
-      "ZÁVODNÍ servis lyží": "1"
-    },
-    {
-      "": "Hloubková impregnace MONTANA® RACE WAXER",
-      "KOMPLEXNÍ servis lyží": "1",
-      "SPORTOVNÍ servis lyží": "1",
-      "ZÁVODNÍ servis lyží": "1"
-    },
-    {
-      "": "     - vosky TOKO Base Performance (2 cykly)",
-      "KOMPLEXNÍ servis lyží": "1",
-      "SPORTOVNÍ servis lyží": "",
-      "ZÁVODNÍ servis lyží": ""
-    },
-    {
-      "": "     - vosky TOKO Performance (4 cykly)",
+      "PPP": "Strukturování na kameni - variální struktura",
       "KOMPLEXNÍ servis lyží": "",
       "SPORTOVNÍ servis lyží": "1",
       "ZÁVODNÍ servis lyží": ""
     },
     {
-      "": "     - vosky TOKO TripleX Performance (6 cyklů)",
+      "PPP": "Strukturování na kameni - středová struktura",
       "KOMPLEXNÍ servis lyží": "",
       "SPORTOVNÍ servis lyží": "",
       "ZÁVODNÍ servis lyží": "1"
     },
     {
-      "": "CENA",
+      "PPP": "Úhlování boční hrany MONTANA® Crystal Glide Finish",
+      "KOMPLEXNÍ servis lyží": "1",
+      "SPORTOVNÍ servis lyží": "",
+      "ZÁVODNÍ servis lyží": ""
+    },
+    {
+      "PPP": "Úhlování boční hrany MONTANA® RACE-EDGE",
+      "KOMPLEXNÍ servis lyží": "",
+      "SPORTOVNÍ servis lyží": "1",
+      "ZÁVODNÍ servis lyží": "1"
+    },
+    {
+      "PPP": "Tuning spodní hrany MONTANA® High Tech Tuning (0,5°)",
+      "KOMPLEXNÍ servis lyží": "1",
+      "SPORTOVNÍ servis lyží": "1",
+      "ZÁVODNÍ servis lyží": "1"
+    },
+    {
+      "PPP": "Hloubková impregnace MONTANA® RACE WAXER",
+      "KOMPLEXNÍ servis lyží": "1",
+      "SPORTOVNÍ servis lyží": "1",
+      "ZÁVODNÍ servis lyží": "1"
+    },
+    {
+      "PPP": "     - vosky TOKO Base Performance (2 cykly)",
+      "KOMPLEXNÍ servis lyží": "1",
+      "SPORTOVNÍ servis lyží": "",
+      "ZÁVODNÍ servis lyží": ""
+    },
+    {
+      "PPP": "     - vosky TOKO Performance (4 cykly)",
+      "KOMPLEXNÍ servis lyží": "",
+      "SPORTOVNÍ servis lyží": "1",
+      "ZÁVODNÍ servis lyží": ""
+    },
+    {
+      "PPP": "     - vosky TOKO TripleX Performance (6 cyklů)",
+      "KOMPLEXNÍ servis lyží": "",
+      "SPORTOVNÍ servis lyží": "",
+      "ZÁVODNÍ servis lyží": "1"
+    },
+    {
+      "PPP": "CENA",
       "KOMPLEXNÍ servis lyží": "790 Kč",
       "SPORTOVNÍ servis lyží": "1190 Kč",
       "ZÁVODNÍ servis lyží": "1790 Kč"

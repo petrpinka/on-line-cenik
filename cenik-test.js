@@ -168,7 +168,7 @@ function highlightThirdColumn() {
     label.style.cssText = `
       position:absolute;
       top:40%;
-      left:-55px;
+      left:-70px;
       transform:rotate(-90deg);
       background:#e60000;
       color:#fff;

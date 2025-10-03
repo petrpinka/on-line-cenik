@@ -154,14 +154,21 @@ function highlightThirdColumn() {
     }
   }
 
-  // horní hrana
+  // horní hrana + zaoblení
   if (allRows[0] && allRows[0].cells[colIndex]) {
-    allRows[0].cells[colIndex].style.borderTop = "3px solid #e60000";
+    var th = allRows[0].cells[colIndex];
+    th.style.borderTop = "3px solid #e60000";
+    th.style.borderTopLeftRadius = "10px";
+    th.style.borderTopRightRadius = "10px";
   }
-  // spodní hrana
+
+  // spodní hrana + zaoblení
   var lastRow = allRows[allRows.length-1];
   if (lastRow && lastRow.cells[colIndex]) {
-    lastRow.cells[colIndex].style.borderBottom = "3px solid #e60000";
+    var td = lastRow.cells[colIndex];
+    td.style.borderBottom = "3px solid #e60000";
+    td.style.borderBottomLeftRadius = "10px";
+    td.style.borderBottomRightRadius = "10px";
   }
 }
 

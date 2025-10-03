@@ -59,9 +59,15 @@
         tbody.appendChild(tr);
       }
 
-      // ===== Zvýraznění celých sloupců 2–4 (pouze barva pozadí) =====
+      // ===== Zvýraznění celých sloupců 2–4 (barevně) =====
       var table = document.getElementById("cenik-table");
       var lastCol = -1;
+
+      var colors = {
+        1: "#d4edda", // sloupec 2 (0-based index 1) světle zelená
+        2: "#dbeafe", // sloupec 3 (0-based index 2) světle modrá
+        3: "#f8d7da"  // sloupec 4 (0-based index 3) světle červená
+      };
 
       function clearHighlight(){
         if (lastCol === -1) return;
@@ -75,12 +81,13 @@
       function highlightCol(col){
         if (col === lastCol) return;
         clearHighlight();
-        if (col < 1 || col > 3) return; // jen sloupce 2–4
-        for (var r=0; r<table.rows.length; r++){
-          var cell = table.rows[r].cells[col];
-          if (cell) cell.style.backgroundColor = "#f5f5f5";
+        if (colors[col]) {
+          for (var r=0; r<table.rows.length; r++){
+            var cell = table.rows[r].cells[col];
+            if (cell) cell.style.backgroundColor = colors[col];
+          }
+          lastCol = col;
         }
-        lastCol = col;
       }
 
       table.addEventListener("mousemove", function(e){
@@ -90,7 +97,7 @@
         }
         if (!cell) { clearHighlight(); return; }
         var idx = cell.cellIndex;
-        if (typeof idx === "number" && idx >= 1 && idx <= 3) {
+        if (typeof idx === "number") {
           highlightCol(idx);
         } else {
           clearHighlight();

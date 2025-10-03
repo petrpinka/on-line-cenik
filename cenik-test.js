@@ -16,7 +16,7 @@
   fetch(URL_JSON)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var table = document.getElementById("cenik-curak");
+      var table = document.getElementById("cenik-test");
       if (!table) return;
 
       table.style.tableLayout = "fixed";

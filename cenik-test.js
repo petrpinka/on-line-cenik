@@ -149,24 +149,44 @@ function highlightThirdColumn() {
     var cell = allRows[r].cells[colIndex];
     if (cell) {
       cell.style.backgroundColor = "rgba(230,0,0,0.05)";
-      cell.style.borderLeft = "2px solid #e00000";
-      cell.style.borderRight = "2px solid #e00000";
+      cell.style.borderLeft = "3px solid #e60000";
+      cell.style.borderRight = "3px solid #e60000";
     }
   }
 
   // horní hrana + zaoblení
   if (allRows[0] && allRows[0].cells[colIndex]) {
     var th = allRows[0].cells[colIndex];
-    th.style.borderTop = "2px solid #e00000";
+    th.style.borderTop = "3px solid #e60000";
     th.style.borderTopLeftRadius = "10px";
     th.style.borderTopRightRadius = "10px";
+    th.style.position = "relative";
+
+    // štítek DOPORUČUJEME
+    var label = document.createElement("div");
+    label.textContent = "DOPORUČUJEME";
+    label.style.cssText = `
+      position:absolute;
+      top:40%;
+      left:-55px;
+      transform:rotate(-90deg);
+      background:#e60000;
+      color:#fff;
+      font-weight:bold;
+      font-size:14px;
+      padding:6px 12px;
+      border-radius:6px;
+      white-space:nowrap;
+      z-index:10;
+    `;
+    th.appendChild(label);
   }
 
   // spodní hrana + zaoblení
   var lastRow = allRows[allRows.length-1];
   if (lastRow && lastRow.cells[colIndex]) {
     var td = lastRow.cells[colIndex];
-    td.style.borderBottom = "2px solid #e00000";
+    td.style.borderBottom = "3px solid #e60000";
     td.style.borderBottomLeftRadius = "10px";
     td.style.borderBottomRightRadius = "10px";
   }

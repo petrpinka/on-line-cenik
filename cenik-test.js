@@ -16,14 +16,14 @@
   fetch(URL_JSON)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var test = document.getElementById("cenik-test");
-      if (!test) return;
+      var table = document.getElementById("cenik-test");
+      if (!table) return;
 
-      test.style.testLayout = "fixed";
-      test.style.width = "100%";
+      table.style.tableLayout = "fixed";
+      table.style.width = "100%";
 
-      var thead = test.querySelector("thead");
-      var tbody = test.querySelector("tbody");
+      var thead = table.querySelector("thead");
+      var tbody = table.querySelector("tbody");
 
       var items = (data && Array.isArray(data.items)) ? data.items : data;
       if (!items || !items.length) return;
@@ -31,7 +31,7 @@
       var headerKeys = Object.keys(items[0]);
 
       // --- COLGROUP s pevnými šířkami ---
-      var oldCol = test.querySelector("colgroup");
+      var oldCol = table.querySelector("colgroup");
       if (oldCol) oldCol.remove();
 
       var colgroup = document.createElement("colgroup");
@@ -46,7 +46,7 @@
         }
         colgroup.appendChild(col);
       }
-      test.insertBefore(colgroup, thead);
+      table.insertBefore(colgroup, thead);
 
       // --- ZÁHLAVÍ ---
       var trh = document.createElement("tr");
@@ -90,15 +90,15 @@
       // --- Zvýraznění celých sloupců 2–4 (barevně) ---
       var lastCol = -1;
       var colors = {
-        1: "#d4edda", // sloupec 2 zelená
-        2: "#dbeafe", // sloupec 3 modrá
-        3: "#f8d7da"  // sloupec 4 červená
+        1: "#E9E9E9", // sloupec 2 
+        2: "#E9E9E9", // sloupec 3 
+        3: "#E9E9E9"  // sloupec 4 
       };
 
       function clearHighlight(){
         if (lastCol === -1) return;
-        for (var r=0; r<test.rows.length; r++){
-          var cell = test.rows[r].cells[lastCol];
+        for (var r=0; r<table.rows.length; r++){
+          var cell = table.rows[r].cells[lastCol];
           if (cell) cell.style.backgroundColor = "";
         }
         lastCol = -1;
@@ -108,17 +108,17 @@
         if (col === lastCol) return;
         clearHighlight();
         if (colors[col]) {
-          for (var r=0; r<test.rows.length; r++){
-            var cell = test.rows[r].cells[col];
+          for (var r=0; r<table.rows.length; r++){
+            var cell = table.rows[r].cells[col];
             if (cell) cell.style.backgroundColor = colors[col];
           }
           lastCol = col;
         }
       }
 
-      test.addEventListener("mousemove", function(e){
+      table.addEventListener("mousemove", function(e){
         var cell = e.target;
-        while (cell && cell !== test && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
+        while (cell && cell !== table && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
           cell = cell.parentNode;
         }
         if (!cell) { clearHighlight(); return; }
@@ -130,140 +130,9 @@
         }
       });
 
-      test.addEventListener("mouseleave", clearHighlight);
+      table.addEventListener("mouseleave", clearHighlight);
     })
     .catch(function(){
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
     });
 })();
-
-<script>
-(function(){
-  // počkáme, až se tabulka z původního skriptu vytvoří
-  function onReady(fn){
-    if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn);
-  }
-
-  onReady(() => {
-    const MAX_WAIT = 6000;   // ms
-    const INTERVAL = 60;     // ms
-    let waited = 0;
-    const timer = setInterval(() => {
-      const test = document.querySelector('#cenik-test');
-      const theadReady = test?.querySelector('thead tr th:nth-child(3)');
-      const bodyReady  = test?.querySelector('tbody tr td:nth-child(3)');
-      if (theadReady && bodyReady) {
-        clearInterval(timer);
-        highlightThirdColumn(test);
-      } else {
-        waited += INTERVAL;
-        if (waited >= MAX_WAIT) clearInterval(timer); // tichý stop, nic nepadá
-      }
-    }, INTERVAL);
-  });
-
-  function highlightThirdColumn(test){
-    const colIndex = 2; // 0-based => třetí sloupec
-
-    // 1) přidáme třídy do hlavičky a těla
-    const th = test.querySelector('thead tr th:nth-child(3)');
-    if (th) {
-      th.classList.add('col3','col3-top');
-      th.style.position = 'relative';
-      // štítek „DOPORUČUJEME“
-      const label = document.createElement('div');
-      label.className = 'recommended-label';
-      label.textContent = 'DOPORUČUJEME';
-      th.appendChild(label);
-    }
-
-    const rows = test.querySelectorAll('tbody tr');
-    rows.forEach((tr, i) => {
-      const td = tr.children[colIndex];
-      if (!td) return;
-      td.classList.add('col3');
-      if (i === rows.length - 1) td.classList.add('col3-bottom'); // poslední řádek = spodní hrana boxu
-    });
-
-    // 2) styly — vytvoří „jediný box“ kolem celého sloupce (bez JS měření)
-    const css = `
-      #cenik-test { border-collapse: collapse; position: relative; }
-
-      /* podbarvení celé kolony */
-      #cenik-test .col3 {
-        background: rgba(230,0,0,0.05);
-        /* svislé hrany boxu — dáme je na KAŽDOU buňku sloupce,
-           border-collapse zajistí plynulé spojení bez mezer */
-        border-left: 3px solid #e60000 !important;
-        border-right: 3px solid #e60000 !important;
-        /* a potlačíme vnitřní horizontální hrany,
-           vršek/spodek doplníme zvlášť níže */
-        border-top: none !important;
-        border-bottom: none !important;
-      }
-
-      /* horní hrana boxu (jen hlavička sloupce) */
-      #cenik-test thead th.col3-top {
-        border-top: 3px solid #e60000 !important;
-      }
-
-      /* spodní hrana boxu (jen poslední řádek sloupce) */
-      #cenik-test tbody td.col3.col3-bottom {
-        border-bottom: 3px solid #e60000 !important;
-      }
-
-      /* jemný stín, aby sloupec vystoupil */
-      #cenik-test .col3.col3-top,
-      #cenik-test .col3.col3-bottom {
-        /* nic navíc – stín uděláme přes pseudo-element na hlavičce,
-           ať je jen jednou a nepere se s border-collapse */
-      }
-      #cenik-test thead th.col3-top {
-        position: relative;
-      }
-      #cenik-test thead th.col3-top::after {
-        content: "";
-        position: absolute;
-        left: -3px; right: -3px; top: -3px;
-        height: calc(100% + 3px + var(--col3-height, 0px)); /* výšku dopočítáme níže skrz CSS var */
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        pointer-events: none;
-        border-radius: 6px;
-      }
-
-      /* štítek */
-      #cenik-test .recommended-label {
-        position: absolute;
-        left: -50px;
-        top: 40%;
-        transform: rotate(-90deg);
-        background: #e60000;
-        color: #fff;
-        font-weight: 700;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 14px;
-        line-height: 1;
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      @media (max-width: 768px){
-        #cenik-test .recommended-label {
-          left: -38px; font-size: 12px; padding: 4px 8px;
-        }
-      }
-    `;
-    const style = document.createElement('style');
-    style.textContent = css;
-    document.head.appendChild(style);
-
-    /* Volitelně: pokus o dopočet výšky pro stín (bez měření layoutu).
-       Jednoduchý hack: kolik je řádků v tbody * průměrná výška buňky?
-       Necháváme pryč, aby nic nespadlo. Pokud stín nechceš, smaž ::after výše.
-    */
-  }
-})();
-</script>
-

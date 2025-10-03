@@ -19,7 +19,6 @@
       var table = document.getElementById("cenik-table");
       if (!table) return;
 
-      // Zajistíme fixed layout a plnou šířku
       table.style.tableLayout = "fixed";
       table.style.width = "100%";
 
@@ -32,7 +31,6 @@
       var headerKeys = Object.keys(items[0]);
 
       // --- COLGROUP s pevnými šířkami ---
-      // nejdřív zrušíme případný starý colgroup
       var oldCol = table.querySelector("colgroup");
       if (oldCol) oldCol.remove();
 
@@ -40,10 +38,10 @@
       for (var i = 0; i < headerKeys.length; i++) {
         var col = document.createElement("col");
         if (headerKeys.length === 4) {
-          // 40% - 20% - 20% - 20%
-          col.style.width = (i === 0) ? "40%" : "20%";
+          // 34% - 22% - 22% - 22%
+          if (i === 0) col.style.width = "34%";
+          else col.style.width = "22%";
         } else {
-          // fallback: rovnoměrně
           col.style.width = (100 / headerKeys.length) + "%";
         }
         colgroup.appendChild(col);
@@ -56,7 +54,6 @@
         var th = document.createElement("th");
         th.textContent = headerKeys[i];
         th.style.cssText = "padding:6px;font-weight:bold;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;";
-        // první sloupec typicky textový → vlevo
         if (i === 0) th.style.textAlign = "left";
         trh.appendChild(th);
       }
@@ -93,9 +90,9 @@
       // --- Zvýraznění celých sloupců 2–4 (barevně) ---
       var lastCol = -1;
       var colors = {
-        1: "#d4edda", // sloupec 2 (0-based index 1) světle zelená
-        2: "#dbeafe", // sloupec 3 světle modrá
-        3: "#f8d7da"  // sloupec 4 světle červená
+        1: "#d4edda", // sloupec 2 zelená
+        2: "#dbeafe", // sloupec 3 modrá
+        3: "#f8d7da"  // sloupec 4 červená
       };
 
       function clearHighlight(){

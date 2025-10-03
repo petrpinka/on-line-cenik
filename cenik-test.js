@@ -16,7 +16,7 @@
   fetch(URL_JSON)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var table = document.getElementById("cenik-lyze");
+      var table = document.getElementById("cenik-table");
       if (!table) return;
 
       table.style.tableLayout = "fixed";
@@ -136,3 +136,134 @@
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
     });
 })();
+
+<script>
+(function(){
+  // počkáme, až se tabulka z původního skriptu vytvoří
+  function onReady(fn){
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  onReady(() => {
+    const MAX_WAIT = 6000;   // ms
+    const INTERVAL = 60;     // ms
+    let waited = 0;
+    const timer = setInterval(() => {
+      const table = document.querySelector('#cenik-table');
+      const theadReady = table?.querySelector('thead tr th:nth-child(3)');
+      const bodyReady  = table?.querySelector('tbody tr td:nth-child(3)');
+      if (theadReady && bodyReady) {
+        clearInterval(timer);
+        highlightThirdColumn(table);
+      } else {
+        waited += INTERVAL;
+        if (waited >= MAX_WAIT) clearInterval(timer); // tichý stop, nic nepadá
+      }
+    }, INTERVAL);
+  });
+
+  function highlightThirdColumn(table){
+    const colIndex = 2; // 0-based => třetí sloupec
+
+    // 1) přidáme třídy do hlavičky a těla
+    const th = table.querySelector('thead tr th:nth-child(3)');
+    if (th) {
+      th.classList.add('col3','col3-top');
+      th.style.position = 'relative';
+      // štítek „DOPORUČUJEME“
+      const label = document.createElement('div');
+      label.className = 'recommended-label';
+      label.textContent = 'DOPORUČUJEME';
+      th.appendChild(label);
+    }
+
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach((tr, i) => {
+      const td = tr.children[colIndex];
+      if (!td) return;
+      td.classList.add('col3');
+      if (i === rows.length - 1) td.classList.add('col3-bottom'); // poslední řádek = spodní hrana boxu
+    });
+
+    // 2) styly — vytvoří „jediný box“ kolem celého sloupce (bez JS měření)
+    const css = `
+      #cenik-table { border-collapse: collapse; position: relative; }
+
+      /* podbarvení celé kolony */
+      #cenik-table .col3 {
+        background: rgba(230,0,0,0.05);
+        /* svislé hrany boxu — dáme je na KAŽDOU buňku sloupce,
+           border-collapse zajistí plynulé spojení bez mezer */
+        border-left: 3px solid #e60000 !important;
+        border-right: 3px solid #e60000 !important;
+        /* a potlačíme vnitřní horizontální hrany,
+           vršek/spodek doplníme zvlášť níže */
+        border-top: none !important;
+        border-bottom: none !important;
+      }
+
+      /* horní hrana boxu (jen hlavička sloupce) */
+      #cenik-table thead th.col3-top {
+        border-top: 3px solid #e60000 !important;
+      }
+
+      /* spodní hrana boxu (jen poslední řádek sloupce) */
+      #cenik-table tbody td.col3.col3-bottom {
+        border-bottom: 3px solid #e60000 !important;
+      }
+
+      /* jemný stín, aby sloupec vystoupil */
+      #cenik-table .col3.col3-top,
+      #cenik-table .col3.col3-bottom {
+        /* nic navíc – stín uděláme přes pseudo-element na hlavičce,
+           ať je jen jednou a nepere se s border-collapse */
+      }
+      #cenik-table thead th.col3-top {
+        position: relative;
+      }
+      #cenik-table thead th.col3-top::after {
+        content: "";
+        position: absolute;
+        left: -3px; right: -3px; top: -3px;
+        height: calc(100% + 3px + var(--col3-height, 0px)); /* výšku dopočítáme níže skrz CSS var */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        pointer-events: none;
+        border-radius: 6px;
+      }
+
+      /* štítek */
+      #cenik-table .recommended-label {
+        position: absolute;
+        left: -50px;
+        top: 40%;
+        transform: rotate(-90deg);
+        background: #e60000;
+        color: #fff;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        line-height: 1;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      @media (max-width: 768px){
+        #cenik-table .recommended-label {
+          left: -38px; font-size: 12px; padding: 4px 8px;
+        }
+      }
+    `;
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+
+    /* Volitelně: pokus o dopočet výšky pro stín (bez měření layoutu).
+       Jednoduchý hack: kolik je řádků v tbody * průměrná výška buňky?
+       Necháváme pryč, aby nic nespadlo. Pokud stín nechceš, smaž ::after výše.
+    */
+  }
+})();
+</script>
+

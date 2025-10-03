@@ -13,7 +13,7 @@
   fetch(URL_JSON)
     .then(r => r.json())
     .then(data => {
-      const table = document.querySelector("#cenik-table");
+      const table = document.querySelector("#cenik-test");
       if(!table) return;
 
       const thead = table.querySelector("thead");

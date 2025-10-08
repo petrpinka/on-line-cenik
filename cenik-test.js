@@ -100,7 +100,7 @@
           cell2.style.padding = "8px";
           cell2.style.backgroundColor = "#ffe"; // TEST žlutě
           cell2.style.fontWeight = "bold";
-          cell2.style.fontSize = "15px";
+          cell2.style.fontSize = "16px"; // zvětšeno na 16px
           if (c2 === 0) cell2.style.textAlign = "center";
         }
       }

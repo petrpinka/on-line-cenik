@@ -48,19 +48,19 @@
       }
       table.insertBefore(colgroup, thead);
 
-      // --- ZÁHLAVÍ (stejná výška jako poslední řádek) ---
+      // --- ZÁHLAVÍ ---
       var trh = document.createElement("tr");
       for (var i=0;i<headerKeys.length;i++){
         var th = document.createElement("th");
         th.textContent = headerKeys[i];
-        th.style.cssText = "padding:8px;font-weight:bold;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;font-size:15px;";
+        th.style.cssText = "padding:4px 8px;font-weight:bold;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;font-size:15px;";
         
         if (i === 0) {
           th.style.textAlign = "left";
         }
         if (i >= 1 && i <= 3) {
           th.style.fontSize = "13px"; 
-          th.style.padding = "2px";   // minimální okraje pro 2.–4. sloupec
+          th.style.padding = "2px 4px";   // menší horní a dolní padding pro 2.–4. sloupec
         }
 
         th.style.backgroundColor = "#ffe"; // TEST žlutě
@@ -68,7 +68,7 @@
       }
       thead.appendChild(trh);
 
-      // --- DATA (default prostřední = fialkově) ---
+      // --- DATA ---
       for (var r=0;r<items.length;r++){
         var row = items[r];
         var tr = document.createElement("tr");
@@ -91,16 +91,17 @@
         tbody.appendChild(tr);
       }
 
-      // --- POSLEDNÍ ŘÁDEK (stejně jako záhlaví) ---
+      // --- POSLEDNÍ ŘÁDEK ---
       var bodyRows = tbody.rows;
       if (bodyRows.length > 0) {
         var lastIdx = bodyRows.length - 1;
         for (var c2=0; c2<bodyRows[lastIdx].cells.length; c2++){
           var cell2 = bodyRows[lastIdx].cells[c2];
-          cell2.style.padding = "4px";        // nový padding
+          cell2.style.padding = "4px";
           cell2.style.backgroundColor = "#ffe"; // TEST žlutě
           cell2.style.fontWeight = "bold";
-          cell2.style.fontSize = "18px";      // nový font
+          cell2.style.fontSize = "18px";
+          cell2.style.borderTop = "1px solid #ddd";   // horní orámování
           if (c2 === 0) cell2.style.textAlign = "center";
         }
       }

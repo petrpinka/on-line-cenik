@@ -132,9 +132,6 @@
       });
 
       table.addEventListener("mouseleave", clearHighlight);
-
-      // --- zvýraznění třetího sloupce + štítek v záhlaví ---
-      highlightThirdColumn();
     })
     .catch(function(){
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
@@ -158,28 +155,12 @@ function highlightThirdColumn() {
     }
   }
 
-  // horní hrana + zaoblení + štítek do záhlaví
+  // horní hrana + zaoblení
   if (allRows[0] && allRows[0].cells[colIndex]) {
     var th = allRows[0].cells[colIndex];
     th.style.borderTop = "1px solid #e00000";
     th.style.borderTopLeftRadius = "10px";
     th.style.borderTopRightRadius = "10px";
-    th.style.position = "relative";
-
-    var label = document.createElement("div");
-    label.textContent = "DOPORUČUJEME";
-    label.style.cssText = `
-      display:inline-block;
-      margin-top:4px;
-      background:#e60000;
-      color:#fff;
-      font-weight:bold;
-      font-size:13px;
-      padding:4px 10px;
-      border-radius:4px;
-    `;
-    th.appendChild(document.createElement("br"));
-    th.appendChild(label);
   }
 
   // spodní hrana + zaoblení
@@ -190,7 +171,38 @@ function highlightThirdColumn() {
     td.style.borderBottomLeftRadius = "10px";
     td.style.borderBottomRightRadius = "10px";
   }
+
+  // === ŠTÍTEK DOPORUČUJEME (svisle uprostřed sloupce) ===
+  var rectTop = allRows[0].cells[colIndex].getBoundingClientRect();
+  var rectBottom = lastRow.cells[colIndex].getBoundingClientRect();
+  var rectTable = table.getBoundingClientRect();
+
+  var topPos = rectTop.top - rectTable.top;
+  var colHeight = rectBottom.bottom - rectTop.top;
+
+  var label = document.createElement("div");
+  label.textContent = "DOPORUČUJEME";
+  label.style.cssText = `
+    position:absolute;
+    left:${rectTop.left - rectTable.left - 55}px;
+    top:${topPos + colHeight/2}px;
+    transform:translateY(-50%) rotate(-90deg);
+    background:#e60000;
+    color:#fff;
+    font-weight:bold;
+    font-size:14px;
+    padding:6px 12px;
+    border-radius:6px;
+    white-space:nowrap;
+    z-index:10;
+  `;
+
+  table.style.position = "relative"; // nutné pro absolutní pozicování
+  table.appendChild(label);
 }
+
+// spustíme s malým zpožděním, aby byla tabulka jistě hotová
+setTimeout(highlightThirdColumn, 200);
 
 // nastavení tabulky tak, aby šel použít border-radius
 var style = document.createElement("style");

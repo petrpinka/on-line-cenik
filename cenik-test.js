@@ -1,4 +1,4 @@
-// TEST verze 8-10-2025 21:56 SELČ (záhlaví = stejná výška jako poslední řádek)
+// CENÍK – finální 08.10.2025 (zmenšené odřádkování 1. sloupce)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -57,10 +57,11 @@
         
         if (i === 0) {
           th.style.textAlign = "left";
+          th.style.lineHeight = "1.2"; // menší odřádkování v 1. sloupci
         }
         if (i >= 1 && i <= 3) {
           th.style.fontSize = "13px"; 
-          th.style.padding = "2px 4px";   // menší horní a dolní padding pro 2.–4. sloupec
+          th.style.padding = "2px 4px";
         }
 
         th.style.backgroundColor = "#ffe"; // TEST žlutě
@@ -78,12 +79,16 @@
           var val = row[key];
           var td = document.createElement("td");
 
-          td.style.padding = "3px"; // prostřední řádky menší padding
+          td.style.padding = "3px"; 
           td.style.borderBottom = "1px solid #eee";
           td.style.textAlign = (c>0 ? "center" : "left");
           td.style.wordBreak = "break-word";
           td.style.whiteSpace = "normal";
           td.style.backgroundColor = "#eef"; // TEST fialkově
+
+          if (c === 0) {
+            td.style.lineHeight = "1.2"; // menší odřádkování v 1. sloupci
+          }
 
           td.innerHTML = isChecked(val) ? checkIcon() : (val == null ? "" : val);
           tr.appendChild(td);
@@ -98,10 +103,10 @@
         for (var c2=0; c2<bodyRows[lastIdx].cells.length; c2++){
           var cell2 = bodyRows[lastIdx].cells[c2];
           cell2.style.padding = "4px";
-          cell2.style.backgroundColor = "#ffe"; // TEST žlutě
+          cell2.style.backgroundColor = "#ffe"; 
           cell2.style.fontWeight = "bold";
           cell2.style.fontSize = "18px";
-          cell2.style.borderTop = "1px solid #ddd";   // horní orámování
+          cell2.style.borderTop = "1px solid #ddd"; 
           if (c2 === 0) cell2.style.textAlign = "center";
         }
       }

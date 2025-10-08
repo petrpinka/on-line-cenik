@@ -1,4 +1,4 @@
-// TEST verze 8-10-2025 21:56 SELČ (záhlaví = stejná výška jako poslední řádek)
+// TEST verze 8-10-2025 22:23 SELČ (záhlaví = stejná výška jako poslední řádek)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -97,10 +97,10 @@
         var lastIdx = bodyRows.length - 1;
         for (var c2=0; c2<bodyRows[lastIdx].cells.length; c2++){
           var cell2 = bodyRows[lastIdx].cells[c2];
-          cell2.style.padding = "8px";
+          cell2.style.padding = "0px";        // zmenšeno o 8px
           cell2.style.backgroundColor = "#ffe"; // TEST žlutě
           cell2.style.fontWeight = "bold";
-          cell2.style.fontSize = "16px"; // zvětšeno na 16px
+          cell2.style.fontSize = "20px";      // zvětšeno na 20px
           if (c2 === 0) cell2.style.textAlign = "center";
         }
       }

@@ -1,8 +1,6 @@
-<script>
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
-  // verze 8.10.2025 17:25
-
+// verze 8-10-2025 20:59
   function checkIcon(){
     return '<svg viewBox="0 0 24 24" width="18" height="18" style="display:inline-block;vertical-align:middle;">'
          + '<circle cx="12" cy="12" r="9.5" fill="none" stroke="#111" stroke-width="1.3"></circle>'
@@ -18,7 +16,7 @@
   fetch(URL_JSON)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var table = document.getElementById("cenik-test");
+      var table = document.getElementById("cenik-lyze");
       if (!table) return;
 
       table.style.tableLayout = "fixed";
@@ -135,83 +133,6 @@
       table.addEventListener("mouseleave", clearHighlight);
     })
     .catch(function(){
-      document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
+      document.querySelector("#cenik-test").innerHTML = "<p>Nelze načíst ceník.</p>";
     });
 })();
-
-function highlightThirdColumn() {
-  var table = document.getElementById("cenik-test");
-  if (!table) return;
-
-  var colIndex = 2; // 0-based -> třetí sloupec
-  var allRows = table.rows;
-
-  // podbarvení + svislé hrany
-  for (var r=0; r<allRows.length; r++) {
-    var cell = allRows[r].cells[colIndex];
-    if (cell) {
-      cell.style.backgroundColor = "rgba(230,0,0,0.05)";
-      cell.style.borderLeft = "1px solid #e00000";
-      cell.style.borderRight = "1px solid #e00000";
-    }
-  }
-
-  // horní hrana + zaoblení
-  if (allRows[0] && allRows[0].cells[colIndex]) {
-    var th = allRows[0].cells[colIndex];
-    th.style.borderTop = "1px solid #e00000";
-    th.style.borderTopLeftRadius = "10px";
-    th.style.borderTopRightRadius = "10px";
-  }
-
-  // spodní hrana + zaoblení
-  var lastRow = allRows[allRows.length-1];
-  if (lastRow && lastRow.cells[colIndex]) {
-    var td = lastRow.cells[colIndex];
-    td.style.borderBottom = "1px solid #e00000";
-    td.style.borderBottomLeftRadius = "10px";
-    td.style.borderBottomRightRadius = "10px";
-  }
-
-  // === ŠTÍTEK DOPORUČUJEME (svisle uprostřed sloupce) ===
-  var rectTop = allRows[0].cells[colIndex].getBoundingClientRect();
-  var rectBottom = lastRow.cells[colIndex].getBoundingClientRect();
-  var rectTable = table.getBoundingClientRect();
-
-  var topPos = rectTop.top - rectTable.top;
-  var colHeight = rectBottom.bottom - rectTop.top;
-
-  var label = document.createElement("div");
-  label.textContent = "DOPORUČUJEME";
-  label.style.cssText = `
-    position:absolute;
-    left:${rectTop.left - rectTable.left - 55}px;
-    top:${topPos + colHeight/2}px;
-    transform:translateY(-50%) rotate(-90deg);
-    background:#e60000;
-    color:#fff;
-    font-weight:bold;
-    font-size:14px;
-    padding:6px 12px;
-    border-radius:6px;
-    white-space:nowrap;
-    z-index:10;
-  `;
-
-  table.style.position = "relative"; // nutné pro absolutní pozicování
-  table.appendChild(label);
-}
-
-// spustíme s malým zpožděním, aby byla tabulka jistě hotová
-setTimeout(highlightThirdColumn, 200);
-
-// nastavení tabulky tak, aby šel použít border-radius
-var style = document.createElement("style");
-style.textContent = `
-  #cenik-test {
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-  }
-`;
-document.head.appendChild(style);
-</script>

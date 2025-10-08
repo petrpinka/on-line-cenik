@@ -1,4 +1,4 @@
-// verze 8-10-2025 21:21
+// TEST verze 8-10-2025 21:29 SELČ
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -15,8 +15,8 @@
   }
 
   fetch(URL_JSON)
-    .then(function(r){ return r.json(); })
-    .then(function(data){
+    .then(r => r.json())
+    .then(data => {
       var table = document.getElementById("cenik-test");
       if (!table) return;
 
@@ -39,7 +39,6 @@
       for (var i = 0; i < headerKeys.length; i++) {
         var col = document.createElement("col");
         if (headerKeys.length === 4) {
-          // 34% - 22% - 22% - 22%
           if (i === 0) col.style.width = "34%";
           else col.style.width = "22%";
         } else {
@@ -72,11 +71,13 @@
           var val = row[key];
           var td = document.createElement("td");
 
-          // --- padding podle řádku ---
+          // --- TEST: padding + barvy ---
           if (isFirst || isLast) {
-            td.style.padding = "5px"; // první a poslední řádek
+            td.style.padding = "5px"; 
+            td.style.backgroundColor = "#ffe"; // žlutavé pozadí
           } else {
-            td.style.padding = "3px"; // prostřední řádky (30% méně)
+            td.style.padding = "3px"; 
+            td.style.backgroundColor = "#eef"; // modravé pozadí
           }
 
           td.style.borderBottom = "1px solid #eee";
@@ -99,9 +100,9 @@
       // --- Zvýraznění celých sloupců 2–4 (barevně) ---
       var lastCol = -1;
       var colors = {
-        1: "#d4edda", // sloupec 2 zelená
-        2: "#dbeafe", // sloupec 3 modrá
-        3: "#f8d7da"  // sloupec 4 červená
+        1: "#d4edda",
+        2: "#dbeafe",
+        3: "#f8d7da"
       };
 
       function clearHighlight(){

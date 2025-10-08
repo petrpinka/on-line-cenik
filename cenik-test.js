@@ -1,6 +1,7 @@
+// verze 8-10-2025 21:14
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
-// verze 8-10-2025 20:59
+
   function checkIcon(){
     return '<svg viewBox="0 0 24 24" width="18" height="18" style="display:inline-block;vertical-align:middle;">'
          + '<circle cx="12" cy="12" r="9.5" fill="none" stroke="#111" stroke-width="1.3"></circle>'
@@ -16,7 +17,7 @@
   fetch(URL_JSON)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var table = document.getElementById("cenik-lyze");
+      var table = document.getElementById("cenik-test");
       if (!table) return;
 
       table.style.tableLayout = "fixed";
@@ -133,6 +134,6 @@
       table.addEventListener("mouseleave", clearHighlight);
     })
     .catch(function(){
-      document.querySelector("#cenik-test").innerHTML = "<p>Nelze načíst ceník.</p>";
+      document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
     });
 })();

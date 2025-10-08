@@ -1,4 +1,4 @@
-// TEST verze 8-10-2025 21:29 SELČ
+// TEST verze 8-10-2025 21:40 SELČ (fix: určení 1./posledního řádku až podle DOM pořadí)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -59,42 +59,48 @@
       }
       thead.appendChild(trh);
 
-      // --- DATA ---
+      // --- DATA: nejdřív všechny řádky s default paddingem 3px + test fialkové pozadí ---
       for (var r=0;r<items.length;r++){
         var row = items[r];
         var tr = document.createElement("tr");
-        var isLast = (r === items.length - 1);
-        var isFirst = (r === 0);
 
         for (var c=0;c<headerKeys.length;c++){
           var key = headerKeys[c];
           var val = row[key];
           var td = document.createElement("td");
 
-          // --- TEST: padding + barvy ---
-          if (isFirst || isLast) {
-            td.style.padding = "5px"; 
-            td.style.backgroundColor = "#ffe"; // žlutavé pozadí
-          } else {
-            td.style.padding = "3px"; 
-            td.style.backgroundColor = "#eef"; // modravé pozadí
-          }
-
+          td.style.padding = "3px"; // default pro prostřední řádky
           td.style.borderBottom = "1px solid #eee";
           td.style.textAlign = (c>0 ? "center" : "left");
           td.style.wordBreak = "break-word";
           td.style.whiteSpace = "normal";
-
-          if (isLast) {
-            td.style.fontWeight = "bold";
-            td.style.fontSize = "15px";
-            if (c === 0) td.style.textAlign = "center";
-          }
+          td.style.backgroundColor = "#eef"; // TEST: fialkově/modravé pro všechny, 1./posl. přepíšeme
 
           td.innerHTML = isChecked(val) ? checkIcon() : (val == null ? "" : val);
           tr.appendChild(td);
         }
         tbody.appendChild(tr);
+      }
+
+      // --- AŽ TEĎ určím 1. a poslední řádek podle skutečného DOM pořadí ---
+      var rows = tbody.rows;
+      if (rows.length > 0) {
+        // první viditelný datový řádek
+        for (var c1=0; c1<rows[0].cells.length; c1++){
+          var cell1 = rows[0].cells[c1];
+          cell1.style.padding = "5px";
+          cell1.style.backgroundColor = "#ffe"; // TEST: žlutavé
+        }
+        // poslední viditelný datový řádek (pokud je jiný než první)
+        var lastIdx = rows.length - 1;
+        for (var c2=0; c2<rows[lastIdx].cells.length; c2++){
+          var cell2 = rows[lastIdx].cells[c2];
+          cell2.style.padding = "5px";
+          cell2.style.backgroundColor = "#ffe"; // TEST: žlutavé
+          cell2.style.fontWeight = "bold";
+          cell2.style.fontSize = "15px";
+          if (c2 === 0) cell2.style.textAlign = "center";
+        }
       }
 
       // --- Zvýraznění celých sloupců 2–4 (barevně) ---

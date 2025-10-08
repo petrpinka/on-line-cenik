@@ -1,4 +1,4 @@
-// verze 8-10-2025 21:14
+// verze 8-10-2025 21:21
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -65,16 +65,24 @@
         var row = items[r];
         var tr = document.createElement("tr");
         var isLast = (r === items.length - 1);
+        var isFirst = (r === 0);
 
         for (var c=0;c<headerKeys.length;c++){
           var key = headerKeys[c];
           var val = row[key];
           var td = document.createElement("td");
 
-          td.style.cssText =
-            "padding:5px;border-bottom:1px solid #eee;"
-            + (c>0 ? "text-align:center;" : "text-align:left;")
-            + "overflow-wrap:anywhere;word-break:break-word;white-space:normal;";
+          // --- padding podle řádku ---
+          if (isFirst || isLast) {
+            td.style.padding = "5px"; // první a poslední řádek
+          } else {
+            td.style.padding = "3px"; // prostřední řádky (30% méně)
+          }
+
+          td.style.borderBottom = "1px solid #eee";
+          td.style.textAlign = (c>0 ? "center" : "left");
+          td.style.wordBreak = "break-word";
+          td.style.whiteSpace = "normal";
 
           if (isLast) {
             td.style.fontWeight = "bold";

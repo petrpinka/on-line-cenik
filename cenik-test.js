@@ -1,4 +1,4 @@
-// CENÍK – finální 08.10.2025 (zmenšené odřádkování 1. sloupce)
+// CENÍK – finální 08.10.2025 v2 (menší vertikální padding v 1. sloupci těla tabulky)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -57,14 +57,14 @@
         
         if (i === 0) {
           th.style.textAlign = "left";
-          th.style.lineHeight = "1.2"; // menší odřádkování v 1. sloupci
+          th.style.lineHeight = "1.2"; 
         }
         if (i >= 1 && i <= 3) {
           th.style.fontSize = "13px"; 
           th.style.padding = "2px 4px";
         }
 
-        th.style.backgroundColor = "#ffe"; // TEST žlutě
+        th.style.backgroundColor = "#ffe"; 
         trh.appendChild(th);
       }
       thead.appendChild(trh);
@@ -84,10 +84,11 @@
           td.style.textAlign = (c>0 ? "center" : "left");
           td.style.wordBreak = "break-word";
           td.style.whiteSpace = "normal";
-          td.style.backgroundColor = "#eef"; // TEST fialkově
+          td.style.backgroundColor = "#eef"; 
 
           if (c === 0) {
-            td.style.lineHeight = "1.2"; // menší odřádkování v 1. sloupci
+            td.style.lineHeight = "1.2"; 
+            td.style.padding = "2px 3px"; // menší vertikální padding v 1. sloupci těla
           }
 
           td.innerHTML = isChecked(val) ? checkIcon() : (val == null ? "" : val);

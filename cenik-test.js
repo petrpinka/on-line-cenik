@@ -1,4 +1,4 @@
-// TEST verze 8-10-2025 21:40 SELČ (fix: určení 1./posledního řádku až podle DOM pořadí)
+// TEST verze 8-10-2025 21:49 SELČ (fix: záhlaví barvit + highlight jen v TBODY)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -31,7 +31,7 @@
 
       var headerKeys = Object.keys(items[0]);
 
-      // --- COLGROUP s pevnými šířkami ---
+      // --- COLGROUP ---
       var oldCol = table.querySelector("colgroup");
       if (oldCol) oldCol.remove();
 
@@ -48,18 +48,21 @@
       }
       table.insertBefore(colgroup, thead);
 
-      // --- ZÁHLAVÍ ---
+      // --- ZÁHLAVÍ (1. řádek) ---
       var trh = document.createElement("tr");
       for (var i=0;i<headerKeys.length;i++){
         var th = document.createElement("th");
         th.textContent = headerKeys[i];
         th.style.cssText = "padding:6px;font-weight:bold;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;";
         if (i === 0) th.style.textAlign = "left";
+        // TEST: záhlaví žlutě a padding 5px
+        th.style.backgroundColor = "#ffe";
+        th.style.padding = "5px";
         trh.appendChild(th);
       }
       thead.appendChild(trh);
 
-      // --- DATA: nejdřív všechny řádky s default paddingem 3px + test fialkové pozadí ---
+      // --- DATA (default 3px + test fialkově) ---
       for (var r=0;r<items.length;r++){
         var row = items[r];
         var tr = document.createElement("tr");
@@ -69,12 +72,12 @@
           var val = row[key];
           var td = document.createElement("td");
 
-          td.style.padding = "3px"; // default pro prostřední řádky
+          td.style.padding = "3px"; // default pro prostřední
           td.style.borderBottom = "1px solid #eee";
           td.style.textAlign = (c>0 ? "center" : "left");
           td.style.wordBreak = "break-word";
           td.style.whiteSpace = "normal";
-          td.style.backgroundColor = "#eef"; // TEST: fialkově/modravé pro všechny, 1./posl. přepíšeme
+          td.style.backgroundColor = "#eef"; // TEST: fialkově
 
           td.innerHTML = isChecked(val) ? checkIcon() : (val == null ? "" : val);
           tr.appendChild(td);
@@ -82,40 +85,30 @@
         tbody.appendChild(tr);
       }
 
-      // --- AŽ TEĎ určím 1. a poslední řádek podle skutečného DOM pořadí ---
-      var rows = tbody.rows;
-      if (rows.length > 0) {
-        // první viditelný datový řádek
-        for (var c1=0; c1<rows[0].cells.length; c1++){
-          var cell1 = rows[0].cells[c1];
-          cell1.style.padding = "5px";
-          cell1.style.backgroundColor = "#ffe"; // TEST: žlutavé
-        }
-        // poslední viditelný datový řádek (pokud je jiný než první)
-        var lastIdx = rows.length - 1;
-        for (var c2=0; c2<rows[lastIdx].cells.length; c2++){
-          var cell2 = rows[lastIdx].cells[c2];
+      // --- Poslední řádek v TBODY -> žlutě, padding 5px, bold ---
+      var bodyRows = tbody.rows;
+      if (bodyRows.length > 0) {
+        var lastIdx = bodyRows.length - 1;
+        for (var c2=0; c2<bodyRows[lastIdx].cells.length; c2++){
+          var cell2 = bodyRows[lastIdx].cells[c2];
           cell2.style.padding = "5px";
-          cell2.style.backgroundColor = "#ffe"; // TEST: žlutavé
+          cell2.style.backgroundColor = "#ffe"; // TEST: žlutě
           cell2.style.fontWeight = "bold";
           cell2.style.fontSize = "15px";
           if (c2 === 0) cell2.style.textAlign = "center";
         }
       }
 
-      // --- Zvýraznění celých sloupců 2–4 (barevně) ---
+      // --- Zvýraznění sloupců: omezit jen na TBODY, ať to nemaže záhlaví ---
       var lastCol = -1;
-      var colors = {
-        1: "#d4edda",
-        2: "#dbeafe",
-        3: "#f8d7da"
-      };
+      var colors = { 1: "#d4edda", 2: "#dbeafe", 3: "#f8d7da" };
 
       function clearHighlight(){
         if (lastCol === -1) return;
-        for (var r=0; r<table.rows.length; r++){
-          var cell = table.rows[r].cells[lastCol];
-          if (cell) cell.style.backgroundColor = "";
+        var rows = tbody ? tbody.rows : [];
+        for (var r=0; r<rows.length; r++){
+          var cell = rows[r].cells[lastCol];
+          if (cell) cell.style.backgroundColor = ""; // vrátí default (až na test barvu, ale jen v TBODY)
         }
         lastCol = -1;
       }
@@ -124,8 +117,9 @@
         if (col === lastCol) return;
         clearHighlight();
         if (colors[col]) {
-          for (var r=0; r<table.rows.length; r++){
-            var cell = table.rows[r].cells[col];
+          var rows = tbody ? tbody.rows : [];
+          for (var r=0; r<rows.length; r++){
+            var cell = rows[r].cells[col];
             if (cell) cell.style.backgroundColor = colors[col];
           }
           lastCol = col;
@@ -138,12 +132,11 @@
           cell = cell.parentNode;
         }
         if (!cell) { clearHighlight(); return; }
+        // sloupec zvýrazňujeme jen pokud jsme v TBODY
+        var inTbody = cell && cell.parentNode && cell.parentNode.parentNode === tbody;
+        if (!inTbody) { clearHighlight(); return; }
         var idx = cell.cellIndex;
-        if (typeof idx === "number") {
-          highlightCol(idx);
-        } else {
-          clearHighlight();
-        }
+        if (typeof idx === "number") highlightCol(idx); else clearHighlight();
       });
 
       table.addEventListener("mouseleave", clearHighlight);

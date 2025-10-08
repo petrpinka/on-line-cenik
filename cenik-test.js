@@ -1,6 +1,7 @@
 <script>
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
+  // verze 8.10.2025 17:25
 
   function checkIcon(){
     return '<svg viewBox="0 0 24 24" width="18" height="18" style="display:inline-block;vertical-align:middle;">'

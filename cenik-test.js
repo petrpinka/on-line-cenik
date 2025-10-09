@@ -1,4 +1,4 @@
-// CENÍK – finální 08.10.2025 v5 (hover = barva + 2px border se zaoblením)
+// CENÍK – verze 09-10-25, 14:30 (hover = barva pozadí + rámeček #111 se zaoblením)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -148,7 +148,7 @@
             var cell = rows[r].cells[col];
             if (cell) {
               cell.style.backgroundColor = colors[col];
-              cell.style.border = "2px solid " + colors[col];
+              cell.style.border = "2px solid #111";   // rámeček barvou textu
               cell.style.borderRadius = "6px";
             }
           }
@@ -158,7 +158,7 @@
             var hcell = headRows[h].cells[col];
             if (hcell) {
               hcell.style.backgroundColor = colors[col];
-              hcell.style.border = "2px solid " + colors[col];
+              hcell.style.border = "2px solid #111";  // rámeček barvou textu
               hcell.style.borderRadius = "6px";
             }
           }

@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 15:21 (hover = červené #fc0303 záhlaví a poslední řádek)
+// CENÍK – verze 09-10-25, 16:12 (červený overlay se zaoblením + plynulý přechod)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -54,7 +54,7 @@
       for (var i=0;i<headerKeys.length;i++){
         var th = document.createElement("th");
         th.textContent = headerKeys[i];
-        th.style.cssText = "padding:4px 8px;font-weight:bold;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;font-size:15px;";
+        th.style.cssText = "padding:4px 8px;font-weight:bold;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;font-size:15px;transition:color .3s ease;";
         
         if (i === 0) {
           th.style.textAlign = "left";
@@ -106,6 +106,7 @@
           cell2.style.fontWeight = "bold";
           cell2.style.fontSize = "18px";
           cell2.style.borderTop = "1px solid #ddd"; 
+          cell2.style.transition = "color .3s ease";
           if (c2 === 0) cell2.style.textAlign = "center";
         }
       }
@@ -120,19 +121,41 @@
       highlight.style.background = "transparent";
       highlight.style.pointerEvents = "none";
       highlight.style.display = "none";
+      highlight.style.zIndex = "5";
       table.appendChild(highlight);
+
+      // --- Overlay pro červené pozadí ---
+      var overlayHead = document.createElement("div");
+      overlayHead.style.position = "absolute";
+      overlayHead.style.background = "#fc0303";
+      overlayHead.style.borderRadius = "8px 8px 0 0";
+      overlayHead.style.display = "none";
+      overlayHead.style.pointerEvents = "none";
+      overlayHead.style.zIndex = "1";
+      overlayHead.style.transition = "opacity .3s ease";
+      table.appendChild(overlayHead);
+
+      var overlayFoot = document.createElement("div");
+      overlayFoot.style.position = "absolute";
+      overlayFoot.style.background = "#fc0303";
+      overlayFoot.style.borderRadius = "0 0 8px 8px";
+      overlayFoot.style.display = "none";
+      overlayFoot.style.pointerEvents = "none";
+      overlayFoot.style.zIndex = "1";
+      overlayFoot.style.transition = "opacity .3s ease";
+      table.appendChild(overlayFoot);
 
       var lastCol = -1;
 
       function clearHighlight(){
         highlight.style.display = "none";
+        overlayHead.style.display = "none";
+        overlayFoot.style.display = "none";
         if (lastCol !== -1) {
-          // reset buněk
-          var hcell = thead.rows[0].cells[lastCol];
-          if (hcell) { hcell.style.backgroundColor = ""; hcell.style.color = ""; }
+          if (thead.rows[0].cells[lastCol]) thead.rows[0].cells[lastCol].style.color = "";
           if (tbody.rows.length > 0) {
             var lc = tbody.rows[tbody.rows.length-1].cells[lastCol];
-            if (lc) { lc.style.backgroundColor = ""; lc.style.color = ""; }
+            if (lc) lc.style.color = "";
           }
         }
         lastCol = -1;
@@ -143,20 +166,42 @@
         if (col === lastCol) return;
         clearHighlight();
 
-        // záhlaví a zápatí červeně
-        var hcell = thead.rows[0].cells[col];
-        if (hcell) { hcell.style.backgroundColor = "#fc0303"; hcell.style.color = "#fff"; }
-        if (tbody.rows.length > 0) {
-          var lc = tbody.rows[tbody.rows.length-1].cells[col];
-          if (lc) { lc.style.backgroundColor = "#fc0303"; lc.style.color = "#fff"; }
-        }
-
-        // rámeček kolem sloupce
-        var rect = hcell.getBoundingClientRect();
         var tableRect = table.getBoundingClientRect();
+        var th = thead.rows[0].cells[col];
+        if (!th) return;
+
+        // rámeček
+        var rect = th.getBoundingClientRect();
         highlight.style.left = (rect.left - tableRect.left) + "px";
         highlight.style.width = rect.width + "px";
         highlight.style.display = "block";
+
+        // záhlaví overlay
+        var headRect = th.getBoundingClientRect();
+        overlayHead.style.left = (headRect.left - tableRect.left) + "px";
+        overlayHead.style.top = (headRect.top - tableRect.top) + "px";
+        overlayHead.style.width = headRect.width + "px";
+        overlayHead.style.height = headRect.height + "px";
+        overlayHead.style.display = "block";
+        th.style.color = "#fff"; 
+        th.style.position = "relative"; 
+        th.style.zIndex = "2";
+
+        // zápatí overlay
+        if (tbody.rows.length > 0) {
+          var lc = tbody.rows[tbody.rows.length-1].cells[col];
+          if (lc) {
+            var footRect = lc.getBoundingClientRect();
+            overlayFoot.style.left = (footRect.left - tableRect.left) + "px";
+            overlayFoot.style.top = (footRect.top - tableRect.top) + "px";
+            overlayFoot.style.width = footRect.width + "px";
+            overlayFoot.style.height = footRect.height + "px";
+            overlayFoot.style.display = "block";
+            lc.style.color = "#fff"; 
+            lc.style.position = "relative"; 
+            lc.style.zIndex = "2";
+          }
+        }
 
         lastCol = col;
       }

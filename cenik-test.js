@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 14:48 (hover = jen záhlaví + poslední řádek, rámeček průhledný uvnitř)
+// CENÍK – verze 09-10-25, 14:53 (hover = rámeček kolem sloupce, overlay šedý jen pro záhlaví a poslední řádek)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -110,68 +110,82 @@
         }
       }
 
-      // --- Hover highlight (jen rámeček, bez pozadí) ---
+      // --- Overlay pro rámeček ---
       var highlight = document.createElement("div");
       highlight.style.position = "absolute";
       highlight.style.top = "0";
       highlight.style.bottom = "0";
       highlight.style.border = "1px solid #bbb";
       highlight.style.borderRadius = "8px";
-      highlight.style.background = "transparent"; // průhledné uvnitř
+      highlight.style.background = "transparent";
       highlight.style.pointerEvents = "none";
       highlight.style.display = "none";
       table.appendChild(highlight);
 
+      // --- Overlay pro šedé buňky (záhlaví + poslední řádek) ---
+      var overlayHead = document.createElement("div");
+      overlayHead.style.position = "absolute";
+      overlayHead.style.background = "#555";
+      overlayHead.style.color = "#fff";
+      overlayHead.style.borderRadius = "8px 8px 0 0";
+      overlayHead.style.display = "none";
+      overlayHead.style.pointerEvents = "none";
+      table.appendChild(overlayHead);
+
+      var overlayFoot = document.createElement("div");
+      overlayFoot.style.position = "absolute";
+      overlayFoot.style.background = "#555";
+      overlayFoot.style.color = "#fff";
+      overlayFoot.style.borderRadius = "0 0 8px 8px";
+      overlayFoot.style.display = "none";
+      overlayFoot.style.pointerEvents = "none";
+      table.appendChild(overlayFoot);
+
       var lastCol = -1;
 
       function clearHighlight(){
-        if (lastCol !== -1) {
-          // obnovit záhlaví
-          var hcell = thead.rows[0].cells[lastCol];
-          if (hcell) {
-            hcell.style.backgroundColor = "";
-            hcell.style.color = "";
-          }
-          // obnovit poslední řádek
-          if (tbody.rows.length > 0) {
-            var lastCell = tbody.rows[tbody.rows.length-1].cells[lastCol];
-            if (lastCell) {
-              lastCell.style.backgroundColor = "";
-              lastCell.style.color = "";
-            }
-          }
-        }
         highlight.style.display = "none";
+        overlayHead.style.display = "none";
+        overlayFoot.style.display = "none";
         lastCol = -1;
       }
 
       function highlightCol(col){
-        if (col === 0) { clearHighlight(); return; } // první sloupec bez hoveru
+        if (col === 0) { clearHighlight(); return; }
         if (col === lastCol) return;
         clearHighlight();
 
-        // záhlaví
-        var hcell = thead.rows[0].cells[col];
-        if (hcell) {
-          hcell.style.backgroundColor = "#555";
-          hcell.style.color = "#fff";
-        }
+        var th = thead.rows[0].cells[col];
+        if (!th) return;
 
-        // poslední řádek
-        if (tbody.rows.length > 0) {
-          var lastCell = tbody.rows[tbody.rows.length-1].cells[col];
-          if (lastCell) {
-            lastCell.style.backgroundColor = "#555";
-            lastCell.style.color = "#fff";
-          }
-        }
+        var tableRect = table.getBoundingClientRect();
 
         // rámeček kolem sloupce
-        var rect = hcell.getBoundingClientRect();
-        var tableRect = table.getBoundingClientRect();
+        var rect = th.getBoundingClientRect();
         highlight.style.left = (rect.left - tableRect.left) + "px";
         highlight.style.width = rect.width + "px";
         highlight.style.display = "block";
+
+        // záhlaví overlay
+        var headRect = th.getBoundingClientRect();
+        overlayHead.style.left = (headRect.left - tableRect.left) + "px";
+        overlayHead.style.top = (headRect.top - tableRect.top) + "px";
+        overlayHead.style.width = headRect.width + "px";
+        overlayHead.style.height = headRect.height + "px";
+        overlayHead.style.display = "block";
+
+        // poslední řádek overlay
+        if (tbody.rows.length > 0) {
+          var lastCell = tbody.rows[tbody.rows.length-1].cells[col];
+          if (lastCell) {
+            var footRect = lastCell.getBoundingClientRect();
+            overlayFoot.style.left = (footRect.left - tableRect.left) + "px";
+            overlayFoot.style.top = (footRect.top - tableRect.top) + "px";
+            overlayFoot.style.width = footRect.width + "px";
+            overlayFoot.style.height = footRect.height + "px";
+            overlayFoot.style.display = "block";
+          }
+        }
 
         lastCol = col;
       }

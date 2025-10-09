@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 16:00 (overlay pod textem, text viditelný)
+// CENÍK – verze 09-10-25, 15:21 (hover = červené #fc0303 záhlaví a poslední řádek)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -120,40 +120,19 @@
       highlight.style.background = "transparent";
       highlight.style.pointerEvents = "none";
       highlight.style.display = "none";
-      highlight.style.zIndex = "5";
       table.appendChild(highlight);
-
-      // --- Overlay pro šedé buňky (záhlaví + poslední řádek) ---
-      var overlayHead = document.createElement("div");
-      overlayHead.style.position = "absolute";
-      overlayHead.style.background = "#fc0303";
-      overlayHead.style.borderRadius = "8px 8px 0 0";
-      overlayHead.style.display = "none";
-      overlayHead.style.pointerEvents = "none";
-      overlayHead.style.zIndex = "0"; // pod textem
-      table.appendChild(overlayHead);
-
-      var overlayFoot = document.createElement("div");
-      overlayFoot.style.position = "absolute";
-      overlayFoot.style.background = "#555";
-      overlayFoot.style.borderRadius = "0 0 8px 8px";
-      overlayFoot.style.display = "none";
-      overlayFoot.style.pointerEvents = "none";
-      overlayFoot.style.zIndex = "0"; // pod textem
-      table.appendChild(overlayFoot);
 
       var lastCol = -1;
 
       function clearHighlight(){
         highlight.style.display = "none";
-        overlayHead.style.display = "none";
-        overlayFoot.style.display = "none";
         if (lastCol !== -1) {
-          // vrátit barvu textu
-          if (thead.rows[0].cells[lastCol]) thead.rows[0].cells[lastCol].style.color = "";
+          // reset buněk
+          var hcell = thead.rows[0].cells[lastCol];
+          if (hcell) { hcell.style.backgroundColor = ""; hcell.style.color = ""; }
           if (tbody.rows.length > 0) {
             var lc = tbody.rows[tbody.rows.length-1].cells[lastCol];
-            if (lc) lc.style.color = "";
+            if (lc) { lc.style.backgroundColor = ""; lc.style.color = ""; }
           }
         }
         lastCol = -1;
@@ -164,39 +143,20 @@
         if (col === lastCol) return;
         clearHighlight();
 
-        var th = thead.rows[0].cells[col];
-        if (!th) return;
-
-        var tableRect = table.getBoundingClientRect();
+        // záhlaví a zápatí červeně
+        var hcell = thead.rows[0].cells[col];
+        if (hcell) { hcell.style.backgroundColor = "#fc0303"; hcell.style.color = "#fff"; }
+        if (tbody.rows.length > 0) {
+          var lc = tbody.rows[tbody.rows.length-1].cells[col];
+          if (lc) { lc.style.backgroundColor = "#fc0303"; lc.style.color = "#fff"; }
+        }
 
         // rámeček kolem sloupce
-        var rect = th.getBoundingClientRect();
+        var rect = hcell.getBoundingClientRect();
+        var tableRect = table.getBoundingClientRect();
         highlight.style.left = (rect.left - tableRect.left) + "px";
         highlight.style.width = rect.width + "px";
         highlight.style.display = "block";
-
-        // záhlaví overlay
-        var headRect = th.getBoundingClientRect();
-        overlayHead.style.left = (headRect.left - tableRect.left) + "px";
-        overlayHead.style.top = (headRect.top - tableRect.top) + "px";
-        overlayHead.style.width = headRect.width + "px";
-        overlayHead.style.height = headRect.height + "px";
-        overlayHead.style.display = "block";
-        th.style.color = "#fff"; // text zůstane nad overlayem
-
-        // poslední řádek overlay
-        if (tbody.rows.length > 0) {
-          var lastCell = tbody.rows[tbody.rows.length-1].cells[col];
-          if (lastCell) {
-            var footRect = lastCell.getBoundingClientRect();
-            overlayFoot.style.left = (footRect.left - tableRect.left) + "px";
-            overlayFoot.style.top = (footRect.top - tableRect.top) + "px";
-            overlayFoot.style.width = footRect.width + "px";
-            overlayFoot.style.height = footRect.height + "px";
-            overlayFoot.style.display = "block";
-            lastCell.style.color = "#fff";
-          }
-        }
 
         lastCol = col;
       }

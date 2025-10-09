@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 14:46 (hover jen záhlaví a poslední řádek u sloupců 2–4, sloupec 1 bez hoveru)
+// CENÍK – verze 09-10-25, 14:48 (hover = jen záhlaví + poslední řádek, rámeček průhledný uvnitř)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -110,13 +110,14 @@
         }
       }
 
-      // --- Hover highlight ---
+      // --- Hover highlight (jen rámeček, bez pozadí) ---
       var highlight = document.createElement("div");
       highlight.style.position = "absolute";
       highlight.style.top = "0";
       highlight.style.bottom = "0";
       highlight.style.border = "1px solid #bbb";
       highlight.style.borderRadius = "8px";
+      highlight.style.background = "transparent"; // průhledné uvnitř
       highlight.style.pointerEvents = "none";
       highlight.style.display = "none";
       table.appendChild(highlight);

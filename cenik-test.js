@@ -1,4 +1,4 @@
-// CENÍK – finální 08.10.2025 v3 (bez pomocných barev pozadí)
+// CENÍK – finální 09.10.2025 14:11 (hover i na záhlaví)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -109,16 +109,23 @@
         }
       }
 
-      // --- Zvýraznění sloupců (jen TBODY) ---
+      // --- Zvýraznění sloupců (thead + tbody) ---
       var lastCol = -1;
       var colors = { 1: "#d4edda", 2: "#dbeafe", 3: "#f8d7da" };
 
       function clearHighlight(){
         if (lastCol === -1) return;
+        // tělo
         var rows = tbody ? tbody.rows : [];
         for (var r=0; r<rows.length; r++){
           var cell = rows[r].cells[lastCol];
           if (cell) cell.style.backgroundColor = "";
+        }
+        // záhlaví
+        var headRows = thead ? thead.rows : [];
+        for (var h=0; h<headRows.length; h++){
+          var hcell = headRows[h].cells[lastCol];
+          if (hcell) hcell.style.backgroundColor = "";
         }
         lastCol = -1;
       }
@@ -127,10 +134,17 @@
         if (col === lastCol) return;
         clearHighlight();
         if (colors[col]) {
+          // tělo
           var rows = tbody ? tbody.rows : [];
           for (var r=0; r<rows.length; r++){
             var cell = rows[r].cells[col];
             if (cell) cell.style.backgroundColor = colors[col];
+          }
+          // záhlaví
+          var headRows = thead ? thead.rows : [];
+          for (var h=0; h<headRows.length; h++){
+            var hcell = headRows[h].cells[col];
+            if (hcell) hcell.style.backgroundColor = colors[col];
           }
           lastCol = col;
         }
@@ -142,8 +156,6 @@
           cell = cell.parentNode;
         }
         if (!cell) { clearHighlight(); return; }
-        var inTbody = cell && cell.parentNode && cell.parentNode.parentNode === tbody;
-        if (!inTbody) { clearHighlight(); return; }
         var idx = cell.cellIndex;
         if (typeof idx === "number") highlightCol(idx); else clearHighlight();
       });

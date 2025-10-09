@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 16:12 (červený overlay se zaoblením + plynulý přechod)
+// CENÍK – verze 09-10-25, 16:16 (plynulý přechod i pro rámeček)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -120,7 +120,8 @@
       highlight.style.borderRadius = "8px";
       highlight.style.background = "transparent";
       highlight.style.pointerEvents = "none";
-      highlight.style.display = "none";
+      highlight.style.opacity = "0";
+      highlight.style.transition = "opacity .3s ease";
       highlight.style.zIndex = "5";
       table.appendChild(highlight);
 
@@ -132,6 +133,7 @@
       overlayHead.style.display = "none";
       overlayHead.style.pointerEvents = "none";
       overlayHead.style.zIndex = "1";
+      overlayHead.style.opacity = "0";
       overlayHead.style.transition = "opacity .3s ease";
       table.appendChild(overlayHead);
 
@@ -142,15 +144,16 @@
       overlayFoot.style.display = "none";
       overlayFoot.style.pointerEvents = "none";
       overlayFoot.style.zIndex = "1";
+      overlayFoot.style.opacity = "0";
       overlayFoot.style.transition = "opacity .3s ease";
       table.appendChild(overlayFoot);
 
       var lastCol = -1;
 
       function clearHighlight(){
-        highlight.style.display = "none";
-        overlayHead.style.display = "none";
-        overlayFoot.style.display = "none";
+        highlight.style.opacity = "0";
+        overlayHead.style.opacity = "0";
+        overlayFoot.style.opacity = "0";
         if (lastCol !== -1) {
           if (thead.rows[0].cells[lastCol]) thead.rows[0].cells[lastCol].style.color = "";
           if (tbody.rows.length > 0) {
@@ -174,7 +177,7 @@
         var rect = th.getBoundingClientRect();
         highlight.style.left = (rect.left - tableRect.left) + "px";
         highlight.style.width = rect.width + "px";
-        highlight.style.display = "block";
+        highlight.style.opacity = "1";
 
         // záhlaví overlay
         var headRect = th.getBoundingClientRect();
@@ -183,6 +186,7 @@
         overlayHead.style.width = headRect.width + "px";
         overlayHead.style.height = headRect.height + "px";
         overlayHead.style.display = "block";
+        overlayHead.style.opacity = "1";
         th.style.color = "#fff"; 
         th.style.position = "relative"; 
         th.style.zIndex = "2";
@@ -197,6 +201,7 @@
             overlayFoot.style.width = footRect.width + "px";
             overlayFoot.style.height = footRect.height + "px";
             overlayFoot.style.display = "block";
+            overlayFoot.style.opacity = "1";
             lc.style.color = "#fff"; 
             lc.style.position = "relative"; 
             lc.style.zIndex = "2";

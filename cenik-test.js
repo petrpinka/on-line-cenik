@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 14:40 (hover = barevné sloupce, záhlaví a zápatí inverzně šedé s bílým textem)
+// CENÍK – verze 09-10-25, 14:46 (hover jen záhlaví a poslední řádek u sloupců 2–4, sloupec 1 bez hoveru)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -122,25 +122,21 @@
       table.appendChild(highlight);
 
       var lastCol = -1;
-      var colors = { 1: "#d4edda", 2: "#dbeafe", 3: "#f8d7da" };
 
       function clearHighlight(){
-        // obnovit styly buněk
         if (lastCol !== -1) {
-          var rows = tbody ? tbody.rows : [];
-          for (var r=0; r<rows.length; r++){
-            var cell = rows[r].cells[lastCol];
-            if (cell) {
-              cell.style.backgroundColor = "";
-              cell.style.color = "";
-            }
+          // obnovit záhlaví
+          var hcell = thead.rows[0].cells[lastCol];
+          if (hcell) {
+            hcell.style.backgroundColor = "";
+            hcell.style.color = "";
           }
-          var headRows = thead ? thead.rows : [];
-          for (var h=0; h<headRows.length; h++){
-            var hcell = headRows[h].cells[lastCol];
-            if (hcell) {
-              hcell.style.backgroundColor = "";
-              hcell.style.color = "";
+          // obnovit poslední řádek
+          if (tbody.rows.length > 0) {
+            var lastCell = tbody.rows[tbody.rows.length-1].cells[lastCol];
+            if (lastCell) {
+              lastCell.style.backgroundColor = "";
+              lastCell.style.color = "";
             }
           }
         }
@@ -149,32 +145,20 @@
       }
 
       function highlightCol(col){
+        if (col === 0) { clearHighlight(); return; } // první sloupec bez hoveru
         if (col === lastCol) return;
         clearHighlight();
 
-        // tělo (kromě posledního řádku)
-        var rows = tbody ? tbody.rows : [];
-        for (var r=0; r<rows.length-1; r++){
-          var cell = rows[r].cells[col];
-          if (cell) {
-            cell.style.backgroundColor = colors[col] || "#eee";
-          }
-        }
-
         // záhlaví
-        var headRows = thead ? thead.rows : [];
-        for (var h=0; h<headRows.length; h++){
-          var hcell = headRows[h].cells[col];
-          if (hcell) {
-            hcell.style.backgroundColor = "#555";
-            hcell.style.color = "#fff";
-          }
+        var hcell = thead.rows[0].cells[col];
+        if (hcell) {
+          hcell.style.backgroundColor = "#555";
+          hcell.style.color = "#fff";
         }
 
         // poslední řádek
-        if (rows.length > 0) {
-          var lastRow = rows[rows.length-1];
-          var lastCell = lastRow.cells[col];
+        if (tbody.rows.length > 0) {
+          var lastCell = tbody.rows[tbody.rows.length-1].cells[col];
           if (lastCell) {
             lastCell.style.backgroundColor = "#555";
             lastCell.style.color = "#fff";
@@ -182,14 +166,11 @@
         }
 
         // rámeček kolem sloupce
-        var th = thead.rows[0].cells[col];
-        if (th) {
-          var rect = th.getBoundingClientRect();
-          var tableRect = table.getBoundingClientRect();
-          highlight.style.left = (rect.left - tableRect.left) + "px";
-          highlight.style.width = rect.width + "px";
-          highlight.style.display = "block";
-        }
+        var rect = hcell.getBoundingClientRect();
+        var tableRect = table.getBoundingClientRect();
+        highlight.style.left = (rect.left - tableRect.left) + "px";
+        highlight.style.width = rect.width + "px";
+        highlight.style.display = "block";
 
         lastCol = col;
       }

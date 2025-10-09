@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 15:49 (overlay pod textem, text viditelný)
+// CENÍK – verze 09-10-25, 16:00 (overlay pod textem, text viditelný)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -126,7 +126,7 @@
       // --- Overlay pro šedé buňky (záhlaví + poslední řádek) ---
       var overlayHead = document.createElement("div");
       overlayHead.style.position = "absolute";
-      overlayHead.style.background = "#545454";
+      overlayHead.style.background = "#fc0303";
       overlayHead.style.borderRadius = "8px 8px 0 0";
       overlayHead.style.display = "none";
       overlayHead.style.pointerEvents = "none";

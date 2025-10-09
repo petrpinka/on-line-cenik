@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 14:53 (hover = rámeček kolem sloupce, overlay šedý jen pro záhlaví a poslední řádek)
+// CENÍK – verze 09-10-25, 15:26 (overlay pod textem, text viditelný)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -120,25 +120,26 @@
       highlight.style.background = "transparent";
       highlight.style.pointerEvents = "none";
       highlight.style.display = "none";
+      highlight.style.zIndex = "5";
       table.appendChild(highlight);
 
       // --- Overlay pro šedé buňky (záhlaví + poslední řádek) ---
       var overlayHead = document.createElement("div");
       overlayHead.style.position = "absolute";
       overlayHead.style.background = "#555";
-      overlayHead.style.color = "#fff";
       overlayHead.style.borderRadius = "8px 8px 0 0";
       overlayHead.style.display = "none";
       overlayHead.style.pointerEvents = "none";
+      overlayHead.style.zIndex = "0"; // pod textem
       table.appendChild(overlayHead);
 
       var overlayFoot = document.createElement("div");
       overlayFoot.style.position = "absolute";
       overlayFoot.style.background = "#555";
-      overlayFoot.style.color = "#fff";
       overlayFoot.style.borderRadius = "0 0 8px 8px";
       overlayFoot.style.display = "none";
       overlayFoot.style.pointerEvents = "none";
+      overlayFoot.style.zIndex = "0"; // pod textem
       table.appendChild(overlayFoot);
 
       var lastCol = -1;
@@ -147,6 +148,14 @@
         highlight.style.display = "none";
         overlayHead.style.display = "none";
         overlayFoot.style.display = "none";
+        if (lastCol !== -1) {
+          // vrátit barvu textu
+          if (thead.rows[0].cells[lastCol]) thead.rows[0].cells[lastCol].style.color = "";
+          if (tbody.rows.length > 0) {
+            var lc = tbody.rows[tbody.rows.length-1].cells[lastCol];
+            if (lc) lc.style.color = "";
+          }
+        }
         lastCol = -1;
       }
 
@@ -173,6 +182,7 @@
         overlayHead.style.width = headRect.width + "px";
         overlayHead.style.height = headRect.height + "px";
         overlayHead.style.display = "block";
+        th.style.color = "#fff"; // text zůstane nad overlayem
 
         // poslední řádek overlay
         if (tbody.rows.length > 0) {
@@ -184,6 +194,7 @@
             overlayFoot.style.width = footRect.width + "px";
             overlayFoot.style.height = footRect.height + "px";
             overlayFoot.style.display = "block";
+            lastCell.style.color = "#fff";
           }
         }
 

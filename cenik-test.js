@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 16:16 (plynulý přechod i pro rámeček)
+// CENÍK – verze 09-10-25, 16:28 (podbarvení celého řádku při hoveru na 1. sloupec)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -149,6 +149,7 @@
       table.appendChild(overlayFoot);
 
       var lastCol = -1;
+      var lastRow = null;
 
       function clearHighlight(){
         highlight.style.opacity = "0";
@@ -161,11 +162,25 @@
             if (lc) lc.style.color = "";
           }
         }
+        if (lastRow) {
+          for (var i=0;i<lastRow.cells.length;i++){
+            lastRow.cells[i].style.backgroundColor = "";
+          }
+        }
         lastCol = -1;
+        lastRow = null;
       }
 
-      function highlightCol(col){
-        if (col === 0) { clearHighlight(); return; }
+      function highlightCol(col, row){
+        if (col === 0) {
+          clearHighlight();
+          for (var i=0;i<row.cells.length;i++){
+            row.cells[i].style.backgroundColor = "#f5f5f5";
+          }
+          lastRow = row;
+          return;
+        }
+
         if (col === lastCol) return;
         clearHighlight();
 
@@ -217,8 +232,9 @@
           cell = cell.parentNode;
         }
         if (!cell) { clearHighlight(); return; }
-        var idx = cell.cellIndex;
-        if (typeof idx === "number") highlightCol(idx); else clearHighlight();
+        var colIdx = cell.cellIndex;
+        var rowEl = cell.parentNode;
+        if (typeof colIdx === "number") highlightCol(colIdx, rowEl); else clearHighlight();
       });
 
       table.addEventListener("mouseleave", clearHighlight);

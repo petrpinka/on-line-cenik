@@ -1,4 +1,4 @@
-// CENÍK – finální 09.10.2025 14:11 (hover i na záhlaví)
+// CENÍK – finální 08.10.2025 v5 (hover = barva + 2px border se zaoblením)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -119,13 +119,21 @@
         var rows = tbody ? tbody.rows : [];
         for (var r=0; r<rows.length; r++){
           var cell = rows[r].cells[lastCol];
-          if (cell) cell.style.backgroundColor = "";
+          if (cell) {
+            cell.style.backgroundColor = "";
+            cell.style.border = "";
+            cell.style.borderRadius = "";
+          }
         }
         // záhlaví
         var headRows = thead ? thead.rows : [];
         for (var h=0; h<headRows.length; h++){
           var hcell = headRows[h].cells[lastCol];
-          if (hcell) hcell.style.backgroundColor = "";
+          if (hcell) {
+            hcell.style.backgroundColor = "";
+            hcell.style.border = "";
+            hcell.style.borderRadius = "";
+          }
         }
         lastCol = -1;
       }
@@ -138,13 +146,21 @@
           var rows = tbody ? tbody.rows : [];
           for (var r=0; r<rows.length; r++){
             var cell = rows[r].cells[col];
-            if (cell) cell.style.backgroundColor = colors[col];
+            if (cell) {
+              cell.style.backgroundColor = colors[col];
+              cell.style.border = "2px solid " + colors[col];
+              cell.style.borderRadius = "6px";
+            }
           }
           // záhlaví
           var headRows = thead ? thead.rows : [];
           for (var h=0; h<headRows.length; h++){
             var hcell = headRows[h].cells[col];
-            if (hcell) hcell.style.backgroundColor = colors[col];
+            if (hcell) {
+              hcell.style.backgroundColor = colors[col];
+              hcell.style.border = "2px solid " + colors[col];
+              hcell.style.borderRadius = "6px";
+            }
           }
           lastCol = col;
         }

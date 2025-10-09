@@ -1,4 +1,4 @@
-// CENÍK – verze 09-10-25, 14:36 (hover = jemný rámeček kolem celého sloupce)
+// CENÍK – verze 09-10-25, 14:40 (hover = barevné sloupce, záhlaví a zápatí inverzně šedé s bílým textem)
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -22,7 +22,7 @@
 
       table.style.tableLayout = "fixed";
       table.style.width = "100%";
-      table.style.position = "relative"; // nutné pro absolutní pozicování highlightu
+      table.style.position = "relative";
 
       var thead = table.querySelector("thead");
       var tbody = table.querySelector("tbody");
@@ -110,20 +110,40 @@
         }
       }
 
-      // --- Hover efekt: jemný rámeček kolem celého sloupce ---
+      // --- Hover highlight ---
       var highlight = document.createElement("div");
       highlight.style.position = "absolute";
       highlight.style.top = "0";
       highlight.style.bottom = "0";
-      highlight.style.border = "1px solid #bbb"; // jemnější barva
-      highlight.style.borderRadius = "8px";      // zaoblené rohy
+      highlight.style.border = "1px solid #bbb";
+      highlight.style.borderRadius = "8px";
       highlight.style.pointerEvents = "none";
       highlight.style.display = "none";
       table.appendChild(highlight);
 
       var lastCol = -1;
+      var colors = { 1: "#d4edda", 2: "#dbeafe", 3: "#f8d7da" };
 
       function clearHighlight(){
+        // obnovit styly buněk
+        if (lastCol !== -1) {
+          var rows = tbody ? tbody.rows : [];
+          for (var r=0; r<rows.length; r++){
+            var cell = rows[r].cells[lastCol];
+            if (cell) {
+              cell.style.backgroundColor = "";
+              cell.style.color = "";
+            }
+          }
+          var headRows = thead ? thead.rows : [];
+          for (var h=0; h<headRows.length; h++){
+            var hcell = headRows[h].cells[lastCol];
+            if (hcell) {
+              hcell.style.backgroundColor = "";
+              hcell.style.color = "";
+            }
+          }
+        }
         highlight.style.display = "none";
         lastCol = -1;
       }
@@ -131,18 +151,45 @@
       function highlightCol(col){
         if (col === lastCol) return;
         clearHighlight();
-        var cols = table.querySelectorAll("colgroup col");
-        if (!cols[col]) return;
 
-        // zjistit šířku a levý offset sloupce
+        // tělo (kromě posledního řádku)
+        var rows = tbody ? tbody.rows : [];
+        for (var r=0; r<rows.length-1; r++){
+          var cell = rows[r].cells[col];
+          if (cell) {
+            cell.style.backgroundColor = colors[col] || "#eee";
+          }
+        }
+
+        // záhlaví
+        var headRows = thead ? thead.rows : [];
+        for (var h=0; h<headRows.length; h++){
+          var hcell = headRows[h].cells[col];
+          if (hcell) {
+            hcell.style.backgroundColor = "#555";
+            hcell.style.color = "#fff";
+          }
+        }
+
+        // poslední řádek
+        if (rows.length > 0) {
+          var lastRow = rows[rows.length-1];
+          var lastCell = lastRow.cells[col];
+          if (lastCell) {
+            lastCell.style.backgroundColor = "#555";
+            lastCell.style.color = "#fff";
+          }
+        }
+
+        // rámeček kolem sloupce
         var th = thead.rows[0].cells[col];
-        if (!th) return;
-        var rect = th.getBoundingClientRect();
-        var tableRect = table.getBoundingClientRect();
-
-        highlight.style.left = (rect.left - tableRect.left) + "px";
-        highlight.style.width = rect.width + "px";
-        highlight.style.display = "block";
+        if (th) {
+          var rect = th.getBoundingClientRect();
+          var tableRect = table.getBoundingClientRect();
+          highlight.style.left = (rect.left - tableRect.left) + "px";
+          highlight.style.width = rect.width + "px";
+          highlight.style.display = "block";
+        }
 
         lastCol = col;
       }

@@ -1,4 +1,5 @@
-// CENÍK – verze 09-10-25, 16:28 (podbarvení celého řádku při hoveru na 1. sloupec)
+<script>
+// CENÍK – verze 10-10-25, permanentní zvýraznění 3. sloupce + hover na 1. sloupec
 (function(){
   var URL_JSON = "https://petrpinka.github.io/on-line-cenik/cenik4.json?nocache=" + Date.now();
 
@@ -54,7 +55,7 @@
       for (var i=0;i<headerKeys.length;i++){
         var th = document.createElement("th");
         th.textContent = headerKeys[i];
-        th.style.cssText = "padding:4px 8px;font-weight:bold;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;font-size:15px;transition:color .3s ease;";
+        th.style.cssText = "padding:4px 8px;font-weight:bold;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:center;overflow-wrap:anywhere;word-break:break-word;white-space:normal;font-size:15px;";
         
         if (i === 0) {
           th.style.textAlign = "left";
@@ -64,7 +65,6 @@
           th.style.fontSize = "13px"; 
           th.style.padding = "2px 4px";
         }
-
         trh.appendChild(th);
       }
       thead.appendChild(trh);
@@ -106,140 +106,54 @@
           cell2.style.fontWeight = "bold";
           cell2.style.fontSize = "18px";
           cell2.style.borderTop = "1px solid #ddd"; 
-          cell2.style.transition = "color .3s ease";
           if (c2 === 0) cell2.style.textAlign = "center";
         }
       }
 
-      // --- Overlay pro rámeček ---
-      var highlight = document.createElement("div");
-      highlight.style.position = "absolute";
-      highlight.style.top = "0";
-      highlight.style.bottom = "0";
-      highlight.style.border = "1px solid #bbb";
-      highlight.style.borderRadius = "8px";
-      highlight.style.background = "transparent";
-      highlight.style.pointerEvents = "none";
-      highlight.style.opacity = "0";
-      highlight.style.transition = "opacity .3s ease";
-      highlight.style.zIndex = "5";
-      table.appendChild(highlight);
-
-      // --- Overlay pro červené pozadí ---
-      var overlayHead = document.createElement("div");
-      overlayHead.style.position = "absolute";
-      overlayHead.style.background = "#fc0303";
-      overlayHead.style.borderRadius = "8px 8px 0 0";
-      overlayHead.style.display = "none";
-      overlayHead.style.pointerEvents = "none";
-      overlayHead.style.zIndex = "1";
-      overlayHead.style.opacity = "0";
-      overlayHead.style.transition = "opacity .3s ease";
-      table.appendChild(overlayHead);
-
-      var overlayFoot = document.createElement("div");
-      overlayFoot.style.position = "absolute";
-      overlayFoot.style.background = "#fc0303";
-      overlayFoot.style.borderRadius = "0 0 8px 8px";
-      overlayFoot.style.display = "none";
-      overlayFoot.style.pointerEvents = "none";
-      overlayFoot.style.zIndex = "1";
-      overlayFoot.style.opacity = "0";
-      overlayFoot.style.transition = "opacity .3s ease";
-      table.appendChild(overlayFoot);
-
-      var lastCol = -1;
+      // --- HOVER: podbarvení řádku při najetí na 1. sloupec ---
       var lastRow = null;
-
-      function clearHighlight(){
-        highlight.style.opacity = "0";
-        overlayHead.style.opacity = "0";
-        overlayFoot.style.opacity = "0";
-        if (lastCol !== -1) {
-          if (thead.rows[0].cells[lastCol]) thead.rows[0].cells[lastCol].style.color = "";
-          if (tbody.rows.length > 0) {
-            var lc = tbody.rows[tbody.rows.length-1].cells[lastCol];
-            if (lc) lc.style.color = "";
-          }
-        }
-        if (lastRow) {
+      function clearRow(){
+        if (lastRow){
           for (var i=0;i<lastRow.cells.length;i++){
             lastRow.cells[i].style.backgroundColor = "";
           }
         }
-        lastCol = -1;
         lastRow = null;
       }
-
-      function highlightCol(col, row){
-        if (col === 0) {
-          clearHighlight();
+      table.addEventListener("mousemove", function(e){
+        var cell = e.target.closest("td,th");
+        if (!cell) return;
+        if (cell.cellIndex === 0 && cell.tagName === "TD") {
+          clearRow();
+          var row = cell.parentNode;
           for (var i=0;i<row.cells.length;i++){
             row.cells[i].style.backgroundColor = "#f5f5f5";
           }
           lastRow = row;
-          return;
+        } else {
+          clearRow();
         }
-
-        if (col === lastCol) return;
-        clearHighlight();
-
-        var tableRect = table.getBoundingClientRect();
-        var th = thead.rows[0].cells[col];
-        if (!th) return;
-
-        // rámeček
-        var rect = th.getBoundingClientRect();
-        highlight.style.left = (rect.left - tableRect.left) + "px";
-        highlight.style.width = rect.width + "px";
-        highlight.style.opacity = "1";
-
-        // záhlaví overlay
-        var headRect = th.getBoundingClientRect();
-        overlayHead.style.left = (headRect.left - tableRect.left) + "px";
-        overlayHead.style.top = (headRect.top - tableRect.top) + "px";
-        overlayHead.style.width = headRect.width + "px";
-        overlayHead.style.height = headRect.height + "px";
-        overlayHead.style.display = "block";
-        overlayHead.style.opacity = "1";
-        th.style.color = "#fff"; 
-        th.style.position = "relative"; 
-        th.style.zIndex = "2";
-
-        // zápatí overlay
-        if (tbody.rows.length > 0) {
-          var lc = tbody.rows[tbody.rows.length-1].cells[col];
-          if (lc) {
-            var footRect = lc.getBoundingClientRect();
-            overlayFoot.style.left = (footRect.left - tableRect.left) + "px";
-            overlayFoot.style.top = (footRect.top - tableRect.top) + "px";
-            overlayFoot.style.width = footRect.width + "px";
-            overlayFoot.style.height = footRect.height + "px";
-            overlayFoot.style.display = "block";
-            overlayFoot.style.opacity = "1";
-            lc.style.color = "#fff"; 
-            lc.style.position = "relative"; 
-            lc.style.zIndex = "2";
-          }
-        }
-
-        lastCol = col;
-      }
-
-      table.addEventListener("mousemove", function(e){
-        var cell = e.target;
-        while (cell && cell !== table && cell.tagName !== 'TD' && cell.tagName !== 'TH') {
-          cell = cell.parentNode;
-        }
-        if (!cell) { clearHighlight(); return; }
-        var colIdx = cell.cellIndex;
-        var rowEl = cell.parentNode;
-        if (typeof colIdx === "number") highlightCol(colIdx, rowEl); else clearHighlight();
       });
+      table.addEventListener("mouseleave", clearRow);
 
-      table.addEventListener("mouseleave", clearHighlight);
+      // --- PERMANENTNÍ zvýraznění 3. sloupce ---
+      var col = 2; // třetí sloupec (0 = první)
+      // záhlaví
+      if (thead.rows[0] && thead.rows[0].cells[col]) {
+        thead.rows[0].cells[col].style.background = "#fc0303";
+        thead.rows[0].cells[col].style.color = "#fff";
+        thead.rows[0].cells[col].style.borderRadius = "8px 8px 0 0";
+      }
+      // zápatí
+      if (tbody.rows.length > 0) {
+        var lc = tbody.rows[tbody.rows.length-1].cells[col];
+        lc.style.background = "#fc0303";
+        lc.style.color = "#fff";
+        lc.style.borderRadius = "0 0 8px 8px";
+      }
     })
     .catch(function(){
       document.querySelector("#cenik").innerHTML = "<p>Nelze načíst ceník.</p>";
     });
 })();
+</script>

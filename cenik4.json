@@ -1,86 +1,85 @@
 {
-  "generatedAt": "2025-10-11T19:36:56+02:00",
   "items": [
     {
-      "": "Oprava skluznice natavením hmoty",
+      "col_1": "Oprava skluznice natavením hmoty",
       "KOMPLEXNÍ servis": "1",
       "SPORTOVNÍ servis": "1",
       "ZÁVODNÍ servis": "1"
     },
     {
-      "": "Předbroušení hran a skluznice",
+      "col_1": "Předbroušení hran a skluznice",
       "KOMPLEXNÍ servis": "1",
       "SPORTOVNÍ servis": "1",
       "ZÁVODNÍ servis": "1"
     },
     {
-      "": "Struktura na kameni - lineární",
+      "col_1": "Struktura na kameni - lineární",
       "KOMPLEXNÍ servis": "1",
       "SPORTOVNÍ servis": "1",
       "ZÁVODNÍ servis": "1"
     },
     {
-      "": "Struktura na kameni - vyhlazovací",
+      "col_1": "Struktura na kameni - vyhlazovací",
       "KOMPLEXNÍ servis": "",
       "SPORTOVNÍ servis": "1",
       "ZÁVODNÍ servis": "1"
     },
     {
-      "": "Struktura na kameni - variální",
-      "KOMPLEXNÍ servis": "",
-      "SPORTOVNÍ servis": "1",
-      "ZÁVODNÍ servis": ""
-    },
-    {
-      "": "Strukturana kameni - středová",
-      "KOMPLEXNÍ servis": "",
-      "SPORTOVNÍ servis": "",
-      "ZÁVODNÍ servis": "1"
-    },
-    {
-      "": "Úhlování hrany MONTANA® Crystal Glide Finish",
-      "KOMPLEXNÍ servis": "1",
-      "SPORTOVNÍ servis": "",
-      "ZÁVODNÍ servis": ""
-    },
-    {
-      "": "Úhlování hrany MONTANA® RACE-EDGE",
-      "KOMPLEXNÍ servis": "",
-      "SPORTOVNÍ servis": "1",
-      "ZÁVODNÍ servis": "1"
-    },
-    {
-      "": "Tuning spodní hrany MONTANA® HTT (0,5°)",
-      "KOMPLEXNÍ servis": "1",
-      "SPORTOVNÍ servis": "1",
-      "ZÁVODNÍ servis": "1"
-    },
-    {
-      "": "Bezkontaktní máza MONTANA® RACE WAXER",
-      "KOMPLEXNÍ servis": "1",
-      "SPORTOVNÍ servis": "1",
-      "ZÁVODNÍ servis": "1"
-    },
-    {
-      "": "     - vosky TOKO Base Performance (2 cykly)",
-      "KOMPLEXNÍ servis": "1",
-      "SPORTOVNÍ servis": "",
-      "ZÁVODNÍ servis": ""
-    },
-    {
-      "": "     - vosky TOKO Performance (4 cykly)",
+      "col_1": "Struktura na kameni - variální",
       "KOMPLEXNÍ servis": "",
       "SPORTOVNÍ servis": "1",
       "ZÁVODNÍ servis": ""
     },
     {
-      "": "     - vosky TOKO TripleX Performance (6 cyklů)",
+      "col_1": "Strukturana kameni - středová",
       "KOMPLEXNÍ servis": "",
       "SPORTOVNÍ servis": "",
       "ZÁVODNÍ servis": "1"
     },
     {
-      "": "CENA",
+      "col_1": "Úhlování hrany MONTANA® Crystal Glide Finish",
+      "KOMPLEXNÍ servis": "1",
+      "SPORTOVNÍ servis": "",
+      "ZÁVODNÍ servis": ""
+    },
+    {
+      "col_1": "Úhlování hrany MONTANA® RACE-EDGE",
+      "KOMPLEXNÍ servis": "",
+      "SPORTOVNÍ servis": "1",
+      "ZÁVODNÍ servis": "1"
+    },
+    {
+      "col_1": "Tuning spodní hrany MONTANA® HTT (0,5°)",
+      "KOMPLEXNÍ servis": "1",
+      "SPORTOVNÍ servis": "1",
+      "ZÁVODNÍ servis": "1"
+    },
+    {
+      "col_1": "Bezkontaktní máza MONTANA® RACE WAXER",
+      "KOMPLEXNÍ servis": "1",
+      "SPORTOVNÍ servis": "1",
+      "ZÁVODNÍ servis": "1"
+    },
+    {
+      "col_1": "     - vosky TOKO Base Performance (2 cykly)",
+      "KOMPLEXNÍ servis": "1",
+      "SPORTOVNÍ servis": "",
+      "ZÁVODNÍ servis": ""
+    },
+    {
+      "col_1": "     - vosky TOKO Performance (4 cykly)",
+      "KOMPLEXNÍ servis": "",
+      "SPORTOVNÍ servis": "1",
+      "ZÁVODNÍ servis": ""
+    },
+    {
+      "col_1": "     - vosky TOKO TripleX Performance (6 cyklů)",
+      "KOMPLEXNÍ servis": "",
+      "SPORTOVNÍ servis": "",
+      "ZÁVODNÍ servis": "1"
+    },
+    {
+      "col_1": "CENA",
       "KOMPLEXNÍ servis": "790 Kč",
       "SPORTOVNÍ servis": "1190 Kč",
       "ZÁVODNÍ servis": "1790 Kč"

@@ -2,63 +2,63 @@
   "items": [
     {
       "služba": "Seřízení vázání s potvrzením",
-      "": "290 Kč"
+      "cena": "290 Kč"
     },
     {
       "služba": "Voskování lyží TOKO BASE PERFORMANCE",
-      "": "190 Kč"
+      "cena": "190 Kč"
     },
     {
       "služba": "Voskování lyží TOKO PERFORMANCE",
-      "": "290 Kč"
+      "cena": "290 Kč"
     },
     {
       "služba": "Voskování lyží TOKO HIGH PERFORMANCE",
-      "": "390 Kč"
+      "cena": "390 Kč"
     },
     {
       "služba": "Voskování snowboardu TOKO BASE PERFORMANCE",
-      "": "250 Kč"
+      "cena": "250 Kč"
     },
     {
       "služba": "Voskování snowboardu TOKO PERFORMANCE",
-      "": "350 Kč"
+      "cena": "350 Kč"
     },
     {
       "služba": "Voskování snowboardu TOKO HIGH PERFORMANCE",
-      "": "450 Kč"
+      "cena": "450 Kč"
     },
     {
       "služba": "Montáž systémového vázání včetně seřízení ",
-      "": "450 Kč"
+      "cena": "450 Kč"
     },
     {
       "služba": "Montáž šroubovaného vázání včetně seřízení",
-      "": "590 Kč"
+      "cena": "590 Kč"
     },
     {
       "služba": "Montáž vrtaného vázání včetně seřízení ",
-      "": "1290 Kč"
+      "cena": "1290 Kč"
     },
     {
       "služba": "Montáž skialp vázání včetně nastavení ",
-      "": "1590 Kč"
+      "cena": "1590 Kč"
     },
     {
       "služba": "Montáž systémového běžeckého vázání",
-      "": "250 Kč"
+      "cena": "250 Kč"
     },
     {
       "služba": "Montáž vrtaného běžeckého vázání ",
-      "": "590 Kč"
+      "cena": "590 Kč"
     },
     {
       "služba": "Montáž snowboardového vázání ",
-      "": "350 Kč"
+      "cena": "350 Kč"
     },
     {
       "služba": "Ostatní servisní práce (cena za 15 min) ",
-      "": "190 Kč"
+      "cena": "190 Kč"
     }
   ]
 }
